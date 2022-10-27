@@ -1,0 +1,4 @@
+name, email
+Canyon Smith, canyonfsmith@gmail.com
+Hamza Habbibi, team@sterlingenterprises.io
+Emma Dunn, emma.c.dunn@gmail.com

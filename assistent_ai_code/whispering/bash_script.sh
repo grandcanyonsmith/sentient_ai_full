@@ -1,0 +1,1 @@
+python3 new_function.py & exit 0
