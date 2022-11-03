@@ -54,7 +54,7 @@ with open('open_ai_variables.csv', 'w') as f:
         # with header variable, value
         f.write("variable, value\n")
         for key, value in variable.items():
-            f.write(key + ", " + value + "\n")
+            f.write(f"{key}, {value}" + "\n")
 
 
 
@@ -71,7 +71,7 @@ with open('open_ai_variables.csv', 'w') as f:
 #     presence_penalty=presence_penalty,
 #     )
 
-    
+
 new_code = '''
 import os
 import openai

@@ -36,14 +36,14 @@ def get_function_code(function_name, file_name):
     # first find the function definition:
     function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
     if not function_def:
-        raise Exception("Could not find function definition for " + function_name)
+        raise Exception(f"Could not find function definition for {function_name}")
     function_def = function_def.group()
     # now find the beginning and end of the function code:
     function_begin = code.find(function_def)
     function_end = function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
-    if next_function_def:
+    if next_function_def := re.search(
+        r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE
+    ):
         indentation_level = function_def.count('\t') + 1
         # now get the indentation level, we don't want any lines that have a lesser indentation
         while code[function_end:].startswith('\t' * indentation_level):
@@ -94,14 +94,14 @@ def replace_function(function_name, file_name, new_code):
     # first find the function definition:
     function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
     if not function_def:
-        raise Exception("Could not find function definition for " + function_name)
+        raise Exception(f"Could not find function definition for {function_name}")
     function_def = function_def.group()
     # now find the beginning and end of the function code:
     function_begin = code.find(function_def)
     function_end = function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
-    if next_function_def:
+    if next_function_def := re.search(
+        r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE
+    ):
         indentation_level = function_def.count('\t') + 1
         # now get the indentation level, we don't want any lines that have a lesser indentation
         while code[function_end:].startswith('\t' * indentation_level):
@@ -122,7 +122,7 @@ def replace_function(function_name, file_name, new_code):
         print("Would you like to make any changes to the function? (yes/no)")
         answer = input()
     if answer == 'yes':
-    
+
         replace_function(function_name, file_name, edit_code(get_function_code(function_name, file_name)))
 
 

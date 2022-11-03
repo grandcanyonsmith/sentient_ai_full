@@ -149,12 +149,16 @@ def select_classification_label():
 
     # get the columns from the csv file database_info.csv
     #cd into database_info folder
-    
+
     columns = pd.read_csv('phone_numbers.csv', nrows=1).columns
     #get all the rows from the csv file database_info.csv
     candidate_labels = columns
     print(candidate_labels)
-    info_we_want = classifier("Based on this text, which info do we want: " + sequence_to_classify, candidate_labels)
+    info_we_want = classifier(
+        f"Based on this text, which info do we want: {sequence_to_classify}",
+        candidate_labels,
+    )
+
     # now we want out of the candidate labels, the one with the highest score
     # we can do this by creating a dictionary with the candidate labels as the keys and the scores as the values
 
@@ -165,7 +169,11 @@ def select_classification_label():
     what_we_have = sorted_candidate_labels_scores[0][0]
     print(what_we_have)
 
-    what_we_want = classifier("Based on this text, what info do we want: " + sequence_to_classify, candidate_labels)
+    what_we_want = classifier(
+        f"Based on this text, what info do we want: {sequence_to_classify}",
+        candidate_labels,
+    )
+
     # now we want out of the candidate labels, the one with the highest score
     # we can do this by creating a dictionary with the candidate labels as the keys and the scores as the values
 
@@ -176,11 +184,11 @@ def select_classification_label():
     what_we_want = new_sorted_candidate_labels_scores[0][0]
     print("want:", what_we_want)
     print("have:", what_we_have)
-    
-    
-    
- 
-    
+
+
+
+
+
     # now, using the column info we have, use the sequence to classify to find the info we want
     # for example, using the sequence to classify, "get colbys phone number", the columns are "name", "phone number", "email address"
     # the info we have is "name", and the info we want is "phone number"
@@ -188,14 +196,20 @@ def select_classification_label():
     # we can do this by using the sequence to classify to find the name, and then using the name to find the phone number
 
     # get the name from the sequence to classify
-    row_we_have = classifier("Based on this text: " + sequence_to_classify + ", what is the " + info_we_have['labels'][0] + "? ", candidate_labels)
+    row_we_have = classifier(
+        f"Based on this text: {sequence_to_classify}, what is the "
+        + info_we_have['labels'][0]
+        + "? ",
+        candidate_labels,
+    )
+
     print("row",row_we_have)
-    
+
     info_we_have = row_we_have['labels'][0]
     print("info we have", info_we_have)
     info_we_want = info_we_want['labels'][0]
     print("info we want", info_we_want)
-    
+
     value = get_value_from_database(info_we_have, info_we_want)
     # print the value to the console
     print(value)
@@ -203,9 +217,7 @@ def select_classification_label():
 def get_value_from_database(column, row):
     # get the value from the database
     df = pd.read_csv('phone_numbers.csv')
-    value = df.loc[df[column] == row, column].iloc[0]
-    
-    return value
+    return df.loc[df[column] == row, column].iloc[0]
 
 
 

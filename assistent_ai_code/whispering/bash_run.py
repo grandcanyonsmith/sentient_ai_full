@@ -32,7 +32,11 @@ def rename_file(new_file_name):
     This function renames the file.
     """
     
-    os.rename('/Users/bottega/Desktop/sentient_ai/hello_world.py', '/Users/bottega/Desktop/sentient_ai/' + new_file_name + '.py')
+    os.rename(
+        '/Users/bottega/Desktop/sentient_ai/hello_world.py',
+        f'/Users/bottega/Desktop/sentient_ai/{new_file_name}.py',
+    )
+
 
     print('The file has been renamed')
 
@@ -48,7 +52,7 @@ def delete_bash_script(new_file_name):
     # open the file bash.sh in append mode
     with open('/Users/bottega/Desktop/sentient_ai/bash.sh', 'a') as f:
         # write the contents to the file
-        f.write('python3 /Users/bottega/Desktop/sentient_ai/' + new_file_name + '.py' + '& exit')
+        f.write(f'python3 /Users/bottega/Desktop/sentient_ai/{new_file_name}.py& exit')
         # close the file
         f.close()
         # print a message

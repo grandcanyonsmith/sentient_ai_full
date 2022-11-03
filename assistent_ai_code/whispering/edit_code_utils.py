@@ -31,14 +31,14 @@ def get_function_code(function_name, file_name):
 
     function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
     if not function_def:
-        raise Exception("Could not find function definition for " + function_name)
+        raise Exception(f"Could not find function definition for {function_name}")
     function_def = function_def.group()
     # Find the beginning and end of the function code:
     function_begin = code.find(function_def)
     function_end = function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
-    if next_function_def:
+    if next_function_def := re.search(
+        r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE
+    ):
         indentation_level = function_def.count('\t') + 1
         # Get the indentation level so we don't want any lines that have a lesser indentation
         while code[function_end:].startswith('\t' * indentation_level):
@@ -62,8 +62,7 @@ def edit_code(code, command):
     temperature=0,
     top_p=.9
     )
-    new_code = response.choices[0].text
-    return new_code
+    return response.choices[0].text
 
     
 
@@ -96,13 +95,16 @@ def replace_function(function_name, file_name, new_code):
         code = file.read()
     function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE | re.DOTALL)
     if function_def is None:
-        raise Exception('Could not find function definition for ' + function_name)
+        raise Exception(f'Could not find function definition for {function_name}')
 
     function_begin = code.find(function_def.group())
     function_end = function_begin + len(function_def.group())
 
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE | re.DOTALL)
-    if next_function_def:
+    if next_function_def := re.search(
+        r'\n\s*def\s+[a-zA-Z0-9_]+\(',
+        code[function_end:],
+        re.MULTILINE | re.DOTALL,
+    ):
         indentation_level = function_def.group().count('\t') + 1
 
         while code[function_end:].startswith('\t' * indentation_level) or code[function_end:].startswith('\n'):
@@ -135,13 +137,11 @@ def list_functions(file_name):
     with open(file_name, 'r') as file:
         code = file.read()
     lines = code.split('\n')
-    functions = []
-    for line in lines:
-        if line.startswith('def'):
-            functions.append(line.strip().split('(')[0].split()[1])
-        else:
-            continue
-    return functions
+    return [
+        line.strip().split('(')[0].split()[1]
+        for line in lines
+        if line.startswith('def')
+    ]
 
 
 
