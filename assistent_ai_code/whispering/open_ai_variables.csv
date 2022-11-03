@@ -1,0 +1,12 @@
+variable, value
+prompt, 1. As a user, I want to be able to see my stock performances over time. 2. As a user, I want to be able to see my stock performances by sector. 3. As a user, I want to be able to see my stock performances by country. Create a software requirements document for this program:
+variable, value
+temperature, .7
+variable, value
+max_tokens, 400
+variable, value
+top_p, 1
+variable, value
+frequency_penalty, .2
+variable, value
+presence_penalty, 0

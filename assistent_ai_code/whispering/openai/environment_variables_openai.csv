@@ -1,0 +1,6 @@
+variable,value
+temperature,.2
+top_p,.8
+top_k,1
+frequency_penalty,.2
+presence_penalty,1
