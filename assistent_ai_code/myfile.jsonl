@@ -1,0 +1,196 @@
+ Service Name|Description|Product Category
+ Backup|Centralized backup across  services|Storage
+ Storage Gateway|Hybrid storage integration|Storage
+ WAF|Filter malicious web traffic|Security, Identity, & Compliance
+ Key Management Service (KMS)|Managed creation and control of encryption keys|Security, Identity, & Compliance
+Amazon Macie|Discover and protect your sensitive data at scale|Security, Identity, & Compliance
+ CloudHSM|Hardware-based key storage for regulatory compliance|Security, Identity, & Compliance
+ Single Sign-On (SSO)|Cloud single sign-on (SSO) service|Security, Identity, & Compliance
+ Resource Access Manager|Simple, secure service to share  resources|Security, Identity, & Compliance
+Amazon Inspector|Automated and continual vulnerability management for Amazon EC2 and Amazon ECR|Security, Identity, & Compliance
+Amazon GuardDuty|Managed threat detection service|Security, Identity, & Compliance
+ Elastic Disaster Recovery (DRS)|Scalable, cost-effective application recovery to |Storage
+ Snow Family|Physical edge computing and storage devices for rugged or disconnected environments|Storage
+Amazon FSx|Launch, run, and scale feature-rich and highly-performant file systems with just a few clicks|Storage
+Amazon S3 Glacier|Low-cost archive storage in the cloud|Storage
+Amazon Elastic File System (EFS)|Fully managed file system for EC2|Storage
+Amazon Elastic Block Store (EBS)|EC2 block storage volumes|Storage
+Amazon Simple Storage Service (S3)|Object storage built to retrieve any amount of data from anywhere|Storage
+Amazon Braket|Accelerate quantum computing research|Robotics
+ RoboMaker|Develop, test, and deploy robotics applications|Robotics
+ Ground Station|Fully managed ground station as a service|Satellite
+ Firewall Manager|Central management of firewall rules|Security, Identity, & Compliance
+ Secrets Manager|Rotate, manage, and retrieve secrets|Security, Identity, & Compliance
+ Directory Service|Host and manage active directory|Security, Identity, & Compliance
+ Database Migration Service (DMS)|Migrate databases with minimal downtime|Migration
+ Mainframe Modernization|Migrate, modernize, operate, and run mainframe workloads|Migration
+Migration Evaluator (formerly TSO Logic)|Create a business case for cloud migration|Migration
+ Transfer Family|Fully managed SFTP, FTPS, and FTP service|Migration
+ Server Migration Service (SMS)|Migrate on-premises servers to |Migration
+ DataSync|Simple, fast, online data transfer|Migration
+ CloudFormation|Create and manage resources with templates|Management & Governance
+ Service Management Connector|Provision, manage and operate  resources within Service Management Tools|Management & Governance
+ Proton|Automate management for container and serverless deployments|Management & Governance
+ Chatbot|ChatOps for |Management & Governance
+ Control Tower|Set up and govern a secure, compliant multi-account environment|Management & Governance
+ Trusted Advisor|Optimize performance and security|Management & Governance
+ Resilience Hub|Prepare and protect your applications from disruptions|Management & Governance
+ Launch Wizard|Easily size, configure, and deploy third party applications on |Management & Governance
+ Personal Health Dashboard|Personalized view of  service health|Management & Governance
+ Service Catalog|Create and use standardized products|Management & Governance
+Amazon Kinesis Video Streams|Process and analyze video streams|Media Services
+ Elemental MediaTailor|Video personalization and monetization|Media Services
+ Elemental Appliances & Software|On-premises media solutions|Media Services
+Amazon Elastic Transcoder|Easy-to-use scalable media transcoding|Media Services
+ Elemental MediaStore|Media storage and simple http origin|Media Services
+Amazon Interactive Video Service|Build engaging live stream experiences|Media Services
+ Elemental MediaConvert|Convert file-based video content|Media Services
+ Elemental MediaConnect|Reliable and secure live video transport|Media Services
+ Elemental MediaLive|Convert live video content|Media Services
+Amazon SageMaker Ground Truth|Build accurate ML training datasets|Machine Learning
+Amazon Rekognition|Analyze image and video|Machine Learning
+ Cognito|User identity and access management|Machine Learning
+Amazon Polly|Turn text into life-like speech|Machine Learning
+Amazon Comprehend|Discover insights and relationships in text|Machine Learning
+Amazon Managed Service for Prometheus|Highly available, secure, and managed monitoring for your containers|Management & Governance
+ Distro for OpenTelemetry|Secure, production-ready open source distribution with predictable performance|Management & Governance
+ Managed Services|Infrastructure operations management for |Management & Governance
+ Organizations|Central governance and management across  accounts|Management & Governance
+Amazon Lumberyard|3D game engine|Gaming
+Amazon CloudWatch|Monitor resources and applications|Management & Governance
+Amazon Managed Grafana|Scalable, secure, and highly available data visualization for your operational metrics, logs, and traces|Management & Governance
+ CloudTrail|Track user activity and API usage|Management & Governance
+ Management Console|Web-based user interface|Management & Governance
+ License Manager|Track, manage, and control licenses|Management & Governance
+ Config|Track resources inventory and changes|Management & Governance
+ Systems Manager|Gain operational insights and take action|Management & Governance
+ Panorama|Improve your operations with computer vision at the edge|Machine Learning
+Amazon Kendra|Reinvent enterprise search with ML|Machine Learning
+Amazon Forecast|Increase forecast accuracy using machine learning|Machine Learning
+Amazon CodeGuru|Find your most expensive lines of code|Machine Learning
+ Inferentia|Machine learning inference chip|Machine Learning
+ DeepLens|Deep learning enabled video camera|Machine Learning
+Amazon Transcribe|Automatic speech recognition|Machine Learning
+Apache MXNet on |Scalable, open-source deep learning framework|Machine Learning
+ Deep Learning AMIs|Deep learning on Amazon EC2|Machine Learning
+Amazon Translate|Natural and fluent language translation|Machine Learning
+Amazon Elastic Inference|Deep learning inference acceleration|Machine Learning
+Amazon Augmented AI|Easily implement human review of ML predictions|Machine Learning
+Amazon Lookout for Equipment|Detect abnormal equipment behavior by analyzing sensor data|Machine Learning
+PyTorch on |Flexible open-source machine learning framework|Machine Learning
+ DeepRacer|Autonomous 1/18th scale race car, driven by ML|Machine Learning
+ IoT 1-Click|One click creation of an  Lambda trigger|Internet Of Things
+ IoT SiteWise|IoT data collector and interpreter|Machine Learning
+Amazon Monitron|Reduce unplanned equipment downtime with predictive maintenance and machine learning|Machine Learning
+TensorFlow on |Open-source machine intelligence library|Machine Learning
+Amazon Lookout for Metrics|Automatically detect anomalies in metrics and identify their root cause|Machine Learning
+Amazon DevOps Guru|ML-powered cloud operations service to improve application availability|Machine Learning
+Amazon SageMaker|Build, train, and deploy machine learning models at scale|Machine Learning
+Amazon Lex|Build voice and text chatbots|Machine Learning
+ DeepComposer|ML enabled musical keyboard|Machine Learning
+Amazon Textract|Extract text and data from documents|Machine Learning
+Amazon HealthLake|Securely store, transform, query, and analyze health data in minutes|Machine Learning
+ Deep Learning Containers|Docker images for deep learning|Machine Learning
+Amazon Personalize|Build real-time recommendations into your applications|Machine Learning
+Amazon Lookout for Vision|Spot product defects using computer vision to automate quality inspection|Machine Learning
+ Detective|Investigate security incidents|Security, Identity, & Compliance
+Amazon Fraud Detector|Detect more online fraud faster|Machine Learning
+ IoT Analytics|Analytics for IoT devices|Internet Of Things
+ IoT Greengrass|Local compute, messaging, and sync for devices|Internet Of Things
+ IoT FleetWise|Easily collect, transform, and transfer vehicle data to the cloud in near-real time|Internet Of Things
+ IoT TwinMaker|Optimize operations by easily creating digital twins of real-world systems|Internet Of Things
+FreeRTOS|Real-time operating system for microcontrollers|Internet Of Things
+ IoT Device Management|Onboard, organize, and remotely manage IoT devices|Internet Of Things
+ IoT EduKit|Learn how to build simple IoT applications with reference hardware and step-by-step tutorials|Internet Of Things
+ IoT Button|Cloud programmable dash button|Internet Of Things
+ IoT RoboRunner|Build applications that help fleets of robots work together seamlessly|Internet Of Things
+ IoT Core|Connect devices to the cloud|Internet Of Things
+ IoT Events|IoT event detection and response|Internet Of Things
+ CodeArtifact|Secure, scalable, and cost-effective artifact management for software development|Developer Tools
+ CodePipeline|Release software using continuous delivery|Developer Tools
+Amazon Corretto|Production-ready distribution of OpenJDK|Developer Tools
+ X-Ray|Analyze and debug your applications|Developer Tools
+ CloudShell|Command line access to  resources and tools directly from a browser|Developer Tools
+ Fault Injection Simulator|Improve resiliency and performance with controlled experiments|End User Computing
+Amazon WorkSpaces|Virtual desktops in the cloud|End User Computing
+Amazon AppStream 2.0|Stream desktop applications securely to a browser|Front-End Web & Mobile
+ AppSync|Accelerate app development with fully-managed, scalable GraphQL APIs|Front-End Web & Mobile
+Amazon Simple Email Service (SES)|High-scale inbound and outbound email|Front-End Web & Mobile
+Amazon API Gateway|Build, deploy, and manage APIs|Front-End Web & Mobile
+ Device Farm|Test Android, iOS, and web apps on real devices in the  cloud|Front-End Web & Mobile
+Amazon Pinpoint|Multichannel marketing communications|Front-End Web & Mobile
+Amazon Location Service|Securely and easily add location data to applications|Front-End Web & Mobile
+ Amplify|Build, deploy, host, and manage scalable web and mobile apps|Game Tech
+ Cloud Development Kit (CDK)|Model cloud infrastructure using code|Developer Tools
+ Cloud9|Write, run, and debug code on a cloud IDE|Developer Tools
+ Command Line Interface (CLI)|Line Interface Unified tool to manage  services|Developer Tools
+ Tools and SDKs|Tools and SDKs for |Developer Tools
+ CodeStar|Develop and deploy  applications|Developer Tools
+ CodeBuild|Build and test code|Developer Tools
+ Cloud Control API|Manage  and third-party cloud infrastructure with consistent APIs|Developer Tools
+ CodeCommit|Store code in private Git repositories|Compute
+ Wavelength|Deliver ultra-low latency applications for 5G devices|Compute
+ Auto Scaling|Scale multiple resources to meet demand|Compute
+ Outposts|Run  infrastructure on-premises|Compute
+Amazon Lightsail|Launch and manage virtual private servers|Containers
+ Fargate|Serverless compute for containers|Containers
+Amazon Elastic Kubernetes Service (EKS)|The most trusted way to run Kubernetes|Containers
+Red Hat OpenShift Service on |Managed OpenShift in the cloud|Containers
+ App2Container|Containerize and migrate existing applications|Containers
+Amazon Elastic Container Registry (ECR)|Easily store, manage, and deploy container images|Containers
+ Application Discovery Service|Discover on-premises servers and virtual machines|Containers
+ Copilot| Copilot is the easiest way to launch and manage your containerized application on |Containers
+Amazon Elastic Container Service (ECS)|Highly secure, reliable, and scalable way to run containers|Databases
+Amazon Timestream|Fully managed time series database|Databases
+Amazon DynamoDB|Managed NoSQL database|Databases
+Amazon DocumentDB|Fully managed document database|Databases
+Amazon RDS|Managed relational database service for MySQL, PostgreSQL, Oracle, SQL Server, and MariaDB|Databases
+Savings Plans|Save up to 72% on compute usage with flexible pricing|Cloud Financial Management
+Reserved Instance (RI) Reporting|Dive deeper into your reserved instances (RIs)|Cloud Financial Management
+ Cost and Usage Report|Access comprehensive cost and usage information|Cloud Financial Management
+ Cost Explorer|Analyze your  cost and usage|Cloud Financial Management
+ Budgets|Set custom cost and usage budgets|Cloud Financial Management
+ Compute Optimizer|Identify optimal  Compute resources|Compute
+ App Runner|Production web applications at scale made easy for developers|Compute
+VMware Cloud on |Build a hybrid cloud without custom hardware|Compute
+ Serverless Application Repository|Discover, deploy, and publish serverless applications|Compute
+ Elastic Beanstalk|Run and manage web apps|Compute
+ Lambda|Run code without thinking about servers|Compute
+ Batch|Run batch jobs at any scale|Compute
+Amazon EC2|Virtual servers in the cloud|Compute
+Amazon EC2 Spot Instances|Run workloads for up to 90% off|Compute
+Amazon Simple Notification Service (SNS)|Pub/sub, SMS, email, and mobile push notifications|Application Integration
+Amazon AppFlow|No-code integration for SaaS apps &  services|Application Integration
+Amazon Simple Queue Service (SQS)|Managed message queues|Application Integration
+ Step Functions|Coordination for distributed applications|Application Integration
+Amazon MQ|Managed message broker service|Architecture Strategy
+ Well-Architected Tool|Review and improve your workloads|Blockchain
+ Global Accelerator|Improve global application availability and performance|Blockchain
+Amazon Managed Blockchain|Create and manage scalable blockchain networks|Blockchain
+Amazon Quantum Ledger Database (QLDB)|Fully managed ledger database|Business Applications
+Amazon WorkMail|Secure email and calendaring|Business Applications
+Amazon WorkDocs|Secure enterprise document storage and sharing|Business Applications
+Alexa for Business|Empower your organization with Alexa|Business Applications
+Amazon Connect|Omnichannel cloud contact center|Business Applications
+Amazon Honeycode|Build mobile & web apps without programming|Business Applications
+Amazon Chime|Frustration-free meetings, video calls, and chat|Business Applications
+ Audit Manager|Automate and streamline your audit process|Business Applications
+Amazon Chime SDK|Real-time messaging, audio, video, and screen sharing|Business Applications
+Amazon Sumerian|Build and run AR and VR applications|AR & VR
+ Glue|Simple, scalable, and serverless data integration|Analytics
+Amazon Athena|Query data in S3 using SQL|Analytics
+Amazon OpenSearch Service (successor to Amazon Elasticsearch Service)|Search, visualize, and analyze up to petabytes of text and unstructured data|Analytics
+ Data Pipeline|Orchestration service for periodic, data-driven workflows|Analytics
+Amazon FinSpace|Store, catalog, prepare, and analyze financial industry data in minutes|Analytics
+ Lake Formation|Build a secure data lake in days|Analytics
+Amazon EMR|Hosted Hadoop framework|Analytics
+Amazon CloudSearch|Managed search service|Analytics
+Amazon Kinesis|Analyze real-time video and data streams|Analytics
+ Data Exchange|Find, subscribe to, and use third-party data in the cloud|Analytics
+Amazon QuickSight|Fast business analytics service|Analytics
+Amazon Managed Streaming for Apache Kafka (MSK)|Fully managed Apache Kafka service|Application Integration
+Amazon Managed Workflows for Apache Airflow (MWAA)|Highly available, secure, and managed workflow orchestration for Apache Airflow|Application Integration
+Amazon EventBridge|Serverless event bus for SaaS apps &  services|Application Integration
+
+
+#  Services by Category in
