@@ -13,7 +13,7 @@ def print_tree(path, level=0):
     if os.path.isdir(path):
         # if so, print all the files and subdirectories in it:
         for file in os.listdir(path):
-            print_tree(path + '/' + file, level + 1)
+            print_tree(f'{path}/{file}', level + 1)
 
 # Now print the tree of the current directory:
 print_tree('.')
@@ -29,7 +29,7 @@ def print_tree_with_root(root_path):
     print(root_path)
     # now print all the files and subdirectories:
     for file in os.listdir(root_path):
-        print_tree(root_path + '/' + file)
+        print_tree(f'{root_path}/{file}')
 
 
 
@@ -44,13 +44,8 @@ def get_files_with_extension(extension, directory='.'):
     :return: A list of all the files with the given extension.
     """
     # First, get all the files in the directory:
-    files = glob.glob(directory + '/*')
-    # Now go through all the files and add the ones with the given extension to the list:
-    files_with_extension = []
-    for file in files:
-        if file.endswith(extension):
-            files_with_extension.append(file)
-    return files_with_extension
+    files = glob.glob(f'{directory}/*')
+    return [file for file in files if file.endswith(extension)]
 
 print(get_files_with_extension('.py'))
 

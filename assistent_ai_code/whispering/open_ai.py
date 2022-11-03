@@ -18,10 +18,10 @@ def open_ai(past_text):
 
     response = response.choices[0].text
     response = response[2:] # eliminate the \n\n at the beginning of the response
-    
+
     with open('open_ai_responses.txt', 'a') as f:
-        f.write("AI: " + response + "\n")
-    
+        f.write(f"AI: {response}" + "\n")
+
     return response
 
 

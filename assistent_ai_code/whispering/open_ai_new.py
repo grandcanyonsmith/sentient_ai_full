@@ -53,10 +53,10 @@ def open_ai(past_text, prompt, temperature, max_tokens, top_p, frequency_penalty
     )
     response = response.choices[0].text
     response = response[2:] # eliminate the
-    
+
     with open('open_ai_responses_new_new.txt', 'a') as f:
-        f.write("AI: " + response)
-    
+        f.write(f"AI: {response}")
+
     return response
 
 new_code = open_ai(past_text, prompt, temperature, max_tokens, top_p, frequency_penalty, presence_penalty)

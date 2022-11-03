@@ -27,9 +27,7 @@ import openai
 import subprocess
 
 def get_user_input():
-    # get user input for what they want to do
-    user_input = input("What do you want to do? ").strip()
-    return user_input
+    return input("What do you want to do? ").strip()
 
 def create_temp_task_file(user_input):
     # create a temp_task.txt file where the ai will log the user input and all the code that the ai generates
@@ -108,15 +106,13 @@ def execute_bash_commands():
     return code
 
 def log_analysis(run_success, code):
-    # log the error message to the temp_task.txt file, and then ask send the error message to openai and ask it to generate a bash script to fix the error
-    if run_success.returncode != 0:
-        with open('temp_task.txt', 'a') as f:
-            f.write(f"\nError: AI Supervisor could not successfully execute bash_script.txt")
-        code = ai_supervisor_request(code)
-        print(code)
-        return code
-    else:
+    if run_success.returncode == 0:
         return None
+    with open('temp_task.txt', 'a') as f:
+        f.write(f"\nError: AI Supervisor could not successfully execute bash_script.txt")
+    code = ai_supervisor_request(code)
+    print(code)
+    return code
 
 def append_logs_to_task_file(code):
     # append the success message to the temp_task.txt file
@@ -126,7 +122,7 @@ def append_logs_to_task_file(code):
     else:
         with open('temp_task.txt', 'a') as f:
             f.write(f"\nSuccess!\n")
-            
+
     return None
 
 def notify_user():

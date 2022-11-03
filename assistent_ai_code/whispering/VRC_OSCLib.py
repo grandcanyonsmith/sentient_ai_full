@@ -11,19 +11,19 @@ from pythonosc import udp_client
 from pythonosc.osc_message_builder import OscMessageBuilder
 
 def AV3_SetInt(data = 0 , Parameter = "example" , IP = '127.0.0.1' ,PORT = 9000):
-    Int(data,"/avatar/parameters/" + Parameter ,IP ,PORT)
+    Int(data, f"/avatar/parameters/{Parameter}", IP, PORT)
 
 def AV3_SetFloat(data = 0.0 , Parameter = "example" , IP = '127.0.0.1' ,PORT = 9000):
-    Float(data,"/avatar/parameters/" + Parameter ,IP ,PORT)
+    Float(data, f"/avatar/parameters/{Parameter}", IP, PORT)
 
 def AV3_SetBool(data = False , Parameter = "example" , IP = '127.0.0.1' ,PORT = 9000):
-    Bool(data,"/avatar/parameters/" + Parameter ,IP ,PORT)
+    Bool(data, f"/avatar/parameters/{Parameter}", IP, PORT)
 
 def Control_Push(Button = "example" , IP = '127.0.0.1' ,PORT = 9000):
-    Buttons("/input/" + Button ,IP ,PORT)
+    Buttons(f"/input/{Button}", IP, PORT)
 
 def Control_Joystick(data = 0.0 ,axis = "example" , IP = '127.0.0.1' ,PORT = 9000):
-    Float(data ,"/input/" + axis ,IP ,PORT)
+    Float(data, f"/input/{axis}", IP, PORT)
 
 def RemoveNonASCII(data):
     new_val = data.encode("ascii", "ignore")

@@ -13,12 +13,12 @@ def select_classification_label(text):
 
     sequence_to_classify = text
     candidate_labels = ['Execute send text', 'Execute write python code', 'Do nothing', 'Send email', 'Edit code', 'Analyze file', 'Edit file', 'Scan file', 'Execute command', 'Do me a favor']
-    
+
     results = classifier(sequence_to_classify, candidate_labels)
     confidence = results['scores'][0]
     best_label = results['labels'][0]
     print(best_label, confidence)
-    
+
     return best_label, confidence
 
 select_classification_label("Edit start_file in websocket client")

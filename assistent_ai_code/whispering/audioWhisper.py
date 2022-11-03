@@ -51,9 +51,6 @@ blacklist = list((map(lambda x: x.lower(), blacklist)))
 @click.option("--phrase_time_limit", default=None, help="phrase time limit before entry ends to break up long recognitions.", type=float)
 @click.option("--osc_ip", default="0", help="IP to send OSC message to. Set to '0' to disable", type=str)
 @click.option("--websocket_ip", default="0", help="IP where Websocket Server listens on. Set to '0' to disable", type=str)
-
-
-
 def main(devices, device_index, sample_rate, task, model, english, condition_on_previous_text, verbose, energy, pause,dynamic_energy, phrase_time_limit, osc_ip, websocket_ip):
 
     def select_email_recipient(text, emails):
@@ -66,7 +63,10 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
 
         sequence_to_classify = text
         # for each email, make a candidate label
-        candidate_labels = ["the email should be sent to" + str(email) for email in emails]
+        candidate_labels = [
+            f"the email should be sent to{str(email)}" for email in emails
+        ]
+
         results = classifier(sequence_to_classify, candidate_labels)
         confidence = results['scores'][0]
         best_label = results['labels'][0]
@@ -86,17 +86,17 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
             # convert to dict
             email = eval(email)
         print("a",email)
-        
-        
-        
 
-        
+
+
+
+
         # email = json.loads(email)
         # now get the email address
         email = email['email']
         print(email)
         recipient = email
-        
+
         return recipient
 
     def get_past_text():
@@ -109,7 +109,7 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
     if str2bool(devices) == True:
         index = 0
         for device in sr.Microphone.list_microphone_names():
-            print(device, end = ' [' + str(index) + '] ' + "\n")
+            print(device, end=f' [{str(index)}] ' + "\n")
             index = index + 1
         return
 
@@ -118,9 +118,9 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
 
     #there are no english models for large
     if model != "large" and english:
-        model = model + ".en"
+        model = f"{model}.en"
     audio_model = whisper.load_model(model)    
-    
+
     #load the speech recognizer and set the initial energy threshold and pause threshold
     r = sr.Recognizer()
     r.energy_threshold = energy
@@ -129,7 +129,7 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
 
     with sr.Microphone(sample_rate=sample_rate, device_index=(device_index if device_index > -1 else None)) as source:
         print("Say something!")
-        
+
         while True:
             #get and save audio to wav file
             audio = r.listen(source, phrase_time_limit=phrase_time_limit)
@@ -143,15 +143,15 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
                 result = audio_model.transcribe(save_path, task=task, condition_on_previous_text=condition_on_previous_text)
 
             predicted_text = result.get('text').strip()
-            print(predicted_text)   
+            print(predicted_text)
             if predicted_text.lower() not in blacklist and predicted_text != "" and predicted_text != " " and "..." not in predicted_text and "jarvis" in predicted_text.lower():
                 command, confidence  = select_classification_label(predicted_text)
                 if command == "Do nothing":
                     pass
 
-                    
+
                 elif command == "Execute send text" and confidence > 0.9:
-                    
+
                     print("sending text")
                     send = requests.post('https://hooks.zapier.com/hooks/catch/12053983/b0z2nmo/', json={"text": predicted_text})
                 elif command == "Execute write python code":
@@ -171,12 +171,12 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
                     predicted_text = predicted_text.replace("edit", "")
                     predicted_text = predicted_text.replace("code", "")
                     print(predicted_text)
-                    command = "code " + predicted_text
+                    command = f"code {predicted_text}"
                     directory_contents, best_label, confidence = get_directory_contents(command)
                     file_name, function_name = select_function(best_label, command)
                     replace_function(function_name, file_name, edit_code(get_function_code(function_name, file_name),command))
                 elif command == "Execute command":
-                    
+
                     # execute subprocess command to run hello_world() from stake.py
                     print("executing command")
                     subprocess.call(['python3', 'stake.py','goodbye_world'])
@@ -186,30 +186,30 @@ def main(devices, device_index, sample_rate, task, model, english, condition_on_
                     directory_contents, best_label, confidence = get_directory_contents(command)
                     file_name, function_name = select_function(best_label, command)
                     subprocess.call(['python3', file_name, function_name])
-                    
 
-                    
-                    
 
-                    
-                    
-                
+
+
+
+
+
+
             with open('open_ai_responses.txt', 'a') as f:
-                f.write("Canyon: " + predicted_text + "\n")
+                f.write(f"Canyon: {predicted_text}" + "\n")
 
             past_text = get_past_text()
 
 
-            if not predicted_text.lower() in blacklist: 
-                if not verbose and predicted_text != "":                    
-                    print(("(Canyon))" if osc_ip != "0" else "") + ": " + predicted_text)
-                    
-                    text_response = open_ai(past_text)
-                    print("OpenAI: " + text_response)
-                    aws_polly_tts(text_response)
+            if (
+                predicted_text.lower() not in blacklist
+                and not verbose
+                and predicted_text != ""
+            ):
+                print(("(Canyon))" if osc_ip != "0" else "") + ": " + predicted_text)
 
-                else:
-                    pass
+                text_response = open_ai(past_text)
+                print(f"OpenAI: {text_response}")
+                aws_polly_tts(text_response)
                 # if websocket_ip != "0":
                 #     websocket.BroadcastMessage(json.dumps(result))
 
@@ -227,5 +227,4 @@ def get_past_text():
     with open('open_ai_responses.txt', 'r') as f:
         lines = f.readlines()
         lines = lines[-10:]
-        past_text = "".join(lines)
-        return past_text
+        return "".join(lines)

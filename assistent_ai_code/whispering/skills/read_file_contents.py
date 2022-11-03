@@ -23,7 +23,7 @@ def select_classification_label(text, labels):
     candidate_labels = labels
     # candiate_labels = candiate_labels + ["Get all code"]
     # append the labels to the candidate labels
-    
+
     results = classifier(sequence_to_classify, candidate_labels)
     confidence = results['scores'][0]
     best_label = results['labels'][0]
@@ -32,8 +32,8 @@ def select_classification_label(text, labels):
     # should return a number
     label_index = candidate_labels.index(best_label)
     label_index = str(label_index)
-    
-    
+
+
     return best_label, confidence
 
 # select_classification_label("Edit start_file in websocket client")

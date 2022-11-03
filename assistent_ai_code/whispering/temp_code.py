@@ -12,7 +12,6 @@ def edit_code_temp(code, command, temp):
     temperature=temp,
     top_p=.9
     )
-    new_code = response.choices[0].text
-    return new_code
+    return response.choices[0].text
 
 
