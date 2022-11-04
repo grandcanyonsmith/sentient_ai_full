@@ -22,145 +22,47 @@ def find_functions(filename):
             print(function) # print the function
     return functions
 
+get_function_code_
+
+get_function_code_new()
+
+replace_function_name_with_better_name
 
 
-def get_function_code(function_name, file_name):
-    """
-    Gets the code of a function in a file.
-    :param function_name: The name of the function to get the code of.
-    :param file_name: The name of the file to search in.
-    :return: The code of the function.
-    """
-    with open(file_name, 'r') as file:
-        code = file.read()
-    # first find the function definition:
-    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
-    if not function_def:
-        raise Exception("Could not find function definition for " + function_name)
-    function_def = function_def.group()
-    # now find the beginning and end of the function code:
-    function_begin = code.find(function_def)
-    function_end = function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
-    if next_function_def:
-        indentation_level = function_def.count('\t') + 1
-        # now get the indentation level, we don't want any lines that have a lesser indentation
-        while code[function_end:].startswith('\t' * indentation_level):
-            function_end += 1
-        function_end += next_function_def.start() - 1
+def is_even(number):
+    if number % 2 == 0:
+        return True
     else:
-        function_end = len(code)
-    # now get the function code:
-    return code[function_begin:function_end]
+        return False
 
+is_int # Make this function more like the zen of python
 
-def get_function_code_new(function_name, file_name):
-    """
-    Gets the code of a function in a file.
-    :param function_name: The name of the function to get the code of.
-    :param file_name: The name of the file to search in.
-    :return: The code of the function.
-    """
-    with open(file_name, 'r') as file:
-        code = file.read()
-    # first find the function definition:
-    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE).group()
-    # now find the beginning and end of the function code:
-    function_begin, function_end = code.find(function_def), function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE).group()
-    indentation_level = function_def.count('\t') + 1
-    # now get the indentation level, we don't want any lines that have a lesser indentation
-    while code[function_end:].startswith('\t' * indentation_level):
-        function_end += 1
-    function_end += next_function_def.start() - 1
-    # now get the function code:
-    return code[function_begin:function_end]
+digit_sum
 
+'''
+Write a recursive method that returns the sum of the digits in a given integer. Use the following method header:
+'''
 
-
-
-def replace_function(function_name, file_name, new_code):
-    """
-    Replaces the code of a function in a file.
-    :param function_name: The name of the function to replace.
-    :param file_name: The name of the file to search in.
-    :param new_code: The new code of the function.
-    :return: None
-    """
-    with open(file_name, 'r') as file:
-        code = file.read()
-    # first find the function definition:
-    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
-    if not function_def:
-        raise Exception("Could not find function definition for " + function_name)
-    function_def = function_def.group()
-    # now find the beginning and end of the function code:
-    function_begin = code.find(function_def)
-    function_end = function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
-    if next_function_def:
-        indentation_level = function_def.count('\t') + 1
-        # now get the indentation level, we don't want any lines that have a lesser indentation
-        while code[function_end:].startswith('\t' * indentation_level):
-            function_end += 1
-        function_end += next_function_def.start()
+def digit_sum_recur(number):
+    if number == 0:
+        return 0
     else:
-        function_end = len(code)
-    new_code = indent_code(new_code, function_def.count('\t'))
-    code = code[:function_begin] + '\n\n' + new_code + code[function_end:] + '\n\n'
-    # now write the new code to the file:
-    with open(file_name, 'w') as file:
-        file.write(code)
-    # now ask the user if they would like to make any changes:
-    print("Would you like to make any changes to the function? (yes/no)")
-    answer = input()
+        return number % 10 + digit_sum_recur(number/10)
 
-    while answer != 'no':
-        print("Would you like to make any changes to the function? (yes/no)")
-        answer = input()
-    if answer == 'yes':
-    
-        replace_function(function_name, file_name, edit_code(get_function_code(function_name, file_name)))
+print digit_sum_recur(123)
 
 
 
 
-        
-        
 
 
-def indent_code(code, indentation_level):
-    """
-    Indents a code block by the given indentation level.
-    :param code: The code to indent.
-    :param indentation_level: The indentation level.
-    :return: The indented code.
-    """
-    return '\t' * indentation_level + code.replace('\n', '\n' + '\t' * indentation_level)
+def main():
+    n = int(input("Enter number: "))
+    print("Sum of digits", n, "is", digit_sum_recur(n))
 
 
-
-
-def edit_code(code):
-    """
-    This function takes in a string of code and returns a string of code that 
-    has been edited based on the user's input.
-    """
-    openai.api_key = "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"
-    desired_changes = input("What changes do you want to make to the code? ")
-    response = openai.Edit.create(
-    model="code-davinci-edit-001",
-    input=code,
-    instruction=desired_changes,
-    temperature=0,
-    top_p=1
-    )
-    new_code = response.choices[0].text
-    print(new_code)
-    return new_cod
+if __name__ == "__main__":
+    main()
 
 
 
@@ -169,31 +71,132 @@ def edit_code(code):
 
 
 
-def append_code():
-    # first, ask what file I want to append the code to
-    file_name = input("What file do you want to append the code to? ").strip()
-    line_number = int(input("What line number do you want to append the code to? ").strip())
-    instructions = input("What do you want to append? ").strip()
-    openai.api_key = "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"
-    response = openai.Edit.create(
-    model="code-davinci-edit-001",
-    input="",
-    instruction=instructions,
-    temperature=0,
-    top_p=1
-    )
-    new_code = response.choices[0].text
-    print(new_code)
-    # now append the code to the line number
-    # now append the code to the file on the line number that I want
-    append_code_to_file(file_name, line_number, new_code)    
-    append_more = input("Do you want to append more code? ")
-    if append_more.lower() == 'yes':
-        append_code()
+
+def factorial(x):
+    total = 1
+    while x > 1:
+        total *= x
+        x -= 1
+    return total
+
+
+def is_prime(x):
+    if x < 2:
+        return False
     else:
-        return code
-    # now return the code
-    return code
+        for n in range(2, x - 1):
+            if x % n == 0:
+                return False
+        return True
+
+def reverse(text):
+    """Reverse a string iteratively."""
+    text_list = list(text)
+    idx = len(text_list) - 1
+    reversed_list = []
+    while idx >= 0:
+        reversed_list.append(text_list[idx])
+        idx -= 1
+    reversed_text = ''.join(reversed_list)
+    return reversed_text
+
+
+def reverse2(text):
+    """Reverse a string recursively."""
+    text_list = list(text)
+    if len(text_list) == 1:
+        return text_list[0]
+    else:
+        return text_list[-1] + reverse2(text_list[:-1])
+
+
+print reverse("hello")
+print reverse2("hello")
+
+
+def is_palindrome(word):
+    return word == word[::-1]
+
+
+def main():
+    print(is_palindrome('racecar'))
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
+
+def get_next_letter_in_sequence(my_string):
+    """
+    :param my_string:
+    :return:
+    """
+    pass
+
+censor
+def censor(text,word):
+  str = ""
+  for i in range(len(word)):
+    if i == 0 or i == len(word)-1:
+      str+=word[i]
+    else:
+      str+="*"
+  text=text.replace(word,str)
+  return text
+
+
+
+def count(sequence, item):
+    found = 0
+    for i in sequence:
+        if i == item:
+            found += 1
+    return found
+
+
+def purify(numbers):
+    new_list = []
+    for i in numbers:
+        if i % 2 == 0:
+            new_list.append(i)
+    return new_list
+
+
+def product(numbers):
+    total = 1
+    for i in numbers:
+        total *= i
+    return total
+
+
+def remove_duplicates(numbers):
+    new_list = []
+    for i in numbers:
+        if i not in new_list:
+            new_list.append(i)
+    return new_list
+
+
+def median(numbers):
+    numbers.sort()
+    if len(numbers) % 2 == 0:
+        middle_index_1 = int(len(numbers) / 2) - 1
+        middle_index_2 = middle_index_1 + 1
+        return (numbers[middle_index_1] + numbers[middle_index_2]) / 2.0
+    else:
+        middle_index = int(len(numbers) / 2)
+        return numbers[middle_index]
+
+
+
 
 
 
@@ -229,6 +232,82 @@ if __name__ == '__main__':
     file_name= input('Enter a file name: ')
     replace_function(function_name, file_name, edit_code(get_function_code(function_name, file_name)))
     # append_code()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

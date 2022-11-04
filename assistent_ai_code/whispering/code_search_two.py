@@ -3,7 +3,7 @@ import os
 from glob import glob
 import pandas as pd
 import openai
-openai.api_key = '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'
+openai.api_key = "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"
 
 def get_function_name(code):
     """
@@ -89,7 +89,7 @@ df.head()
 
 from openai.embeddings_utils import cosine_similarity
 
-def search_functions(code_query, n=2, pprint=True,n_lines=100):
+def search_functions(code_query, n=1, pprint=True,n_lines=100):
     embedding = get_embedding(code_query, engine='code-search-babbage-text-001')
     df['similarities'] = df.code_embedding.apply(lambda x: cosine_similarity(x, embedding))
 
@@ -99,7 +99,10 @@ def search_functions(code_query, n=2, pprint=True,n_lines=100):
             print(r[1].filepath+":"+r[1].function_name + "  score=" + str(round(r[1].similarities, 3)))
             print("\n".join(r[1].code.split("\n")[:n_lines]))
             print('-'*70)
-    return res 
+        name = res.iloc[0].function_name
+        code = res.iloc[0].code
+            
+    return name, code
 
 # search_functions("stipulations/_title/", n=1, pprint=True, n_lines=100)
 

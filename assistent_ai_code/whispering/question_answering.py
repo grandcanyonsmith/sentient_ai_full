@@ -18,7 +18,7 @@ import requests
 url = "https://hooks.zapier.com/hooks/catch/12053983/bxro5x9/"
 data = {"code": code}
 r = requests.post(url, data=data)
-openai.api_key = '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'
+openai.api_key = "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"
 
 COMPLETIONS_MODEL = "text-davinci-002"
 

@@ -3,7 +3,7 @@ This program is used to find all the functions in a file, to find the code of a 
 This enables verbal programming by allowing the user to say the name of the function and what it should do, and then the AI model will find the function in the file and replace the code with the new code based on what the user instructed the AI model to do.
 """
 from whispering.skills.read_file_contents import get_directory_contents, select_classification_label
-from code_search import search_functions
+# from code_search import search_functions
 import os
 import sys
 import openai
@@ -30,14 +30,12 @@ def get_function_code(function_name, file_name):
 
     function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
     if not function_def:
-        raise Exception("Could not find function definition for " + function_name)
+        raise Exception(f"Could not find function definition for {function_name}")
     function_def = function_def.group()
     # Find the beginning and end of the function code:
     function_begin = code.find(function_def)
     function_end = function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
-    if next_function_def:
+    if next_function_def := re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE):
         indentation_level = function_def.count('\t') + 1
         # Get the indentation level so we don't want any lines that have a lesser indentation
         while code[function_end:].startswith('\t' * indentation_level):
@@ -53,16 +51,15 @@ def edit_code(code, command):
     """
     This function takes in a code and a command and returns the edited code.
     """
-    openai.api_key = "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"
+    openai.api_key = "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"
     response = openai.Edit.create(
     model="code-davinci-edit-001",
     input=code,
     instruction=command,
     temperature=0,
-    top_p=.5
+    top_p=1
     )
-    new_code = response.choices[0].text
-    return new_code
+    return response.choices[0].text
 
     
 
@@ -95,13 +92,12 @@ def replace_function(function_name, file_name, new_code):
         code = file.read()
     function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code)
     if function_def is None:
-        raise Exception('Could not find function definition for ' + function_name)
+        raise Exception(f'Could not find function definition for {function_name}')
 
     function_begin = code.find(function_def.group())
     function_end = function_begin + len(function_def.group())
 
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:])
-    if next_function_def:
+    if next_function_def := re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:]):
         indentation_level = function_def.group().count('\t') + 1
 
         while code[function_end:].startswith('\t' * indentation_level) or code[function_end:].startswith('\n'):
@@ -135,13 +131,7 @@ def list_functions(file_name):
     with open(file_name, 'r') as file:
         code = file.read()
     lines = code.split('\n')
-    functions = []
-    for line in lines:
-        if line.startswith('def'):
-            functions.append(line.strip().split('(')[0].split()[1])
-        else:
-            continue
-    return functions
+    return [line.strip().split('(')[0].split()[1] for line in lines if line.startswith('def')]
 
 
 
@@ -186,9 +176,7 @@ def get_code_from_screen_shot():
     import pytesseract
     pytesseract.pytesseract.tesseract_cmd = r'/usr/local/bin/tesseract'
     img = cv2.imread('/Users/canyonsmith/Desktop/sentient_ai/assistent_ai_code/whispering/whispering.png')
-    code = pytesseract.image_to_string(img)
-
-    return code
+    return pytesseract.image_to_string(img)
 
 def get_function_name(code):
     """
@@ -214,9 +202,9 @@ def get_functions(code):
     """
     Get all functions in a Python file.
     """
-    all_lines = [line for line in code.split("\n")]
-    
-    
+    all_lines = list(code.split("\n"))
+        
+
     for i, l in enumerate(all_lines):
         if l.startswith("def "):
             code = get_until_no_space(all_lines, i)
@@ -239,3 +227,27 @@ def get_functions(code):
 #     break
 
 
+    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code)
+    if function_def is None:
+        raise Exception(f'Could not find function definition for {function_name}')
+
+    function_begin = code.find(function_def.group())
+    function_end = function_begin + len(function_def.group())
+
+    if next_function_def := re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:]):
+        indentation_level = function_def.group().count('\t') + 1
+
+        while code[function_end:].startswith('\t' * indentation_level) or code[function_end:].startswith('\n'):
+            function_end += 1
+        function_end += next_function_def.start()
+
+    else:
+        function_end = len(code)
+
+    new_code = indent_code(new_code, function_def.group().count('\t'))
+
+    code = code[:function_begin] + new_code + code[function_end:] + '\n\n'
+
+    with open(file_name, 'w') as file:
+        file.write(code)
+    return code

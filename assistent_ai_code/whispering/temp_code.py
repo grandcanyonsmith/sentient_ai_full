@@ -4,7 +4,7 @@ def edit_code_temp(code, command, temp):
     """
     This function takes in a code and a command and returns the edited code.
     """
-    openai.api_key = "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"
+    openai.api_key = "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"
     response = openai.Edit.create(
     model="code-davinci-edit-001",
     input=code,

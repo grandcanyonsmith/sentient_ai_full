@@ -18,7 +18,7 @@ import requests
 url = "https://hooks.zapier.com/hooks/catch/12053983/bxro5x9/"
 data = {"code": code}
 r = requests.post(url, data=data)
-openai.api_key = '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'
+openai.api_key = "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"
 
 COMPLETIONS_MODEL = "text-davinci-002"
 
@@ -157,12 +157,8 @@ def order_document_sections_by_query_similarity(query, contexts: dict[(str, str)
     Return the list of document sections, sorted by relevance in descending order.
     """
     query_embedding = get_query_embedding(query)
-    
-    document_similarities = sorted([
-        (vector_similarity(query_embedding, doc_embedding), doc_index) for doc_index, doc_embedding in contexts.items()
-    ], reverse=True)
-    
-    return document_similarities
+
+    return sorted([(vector_similarity(query_embedding, doc_embedding), doc_index) for doc_index, doc_embedding in contexts.items()], reverse=True)
 
 # order_document_sections_by_query_similarity("What is the best AI model for text search?", document_embeddings)[:5]
 

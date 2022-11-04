@@ -53,7 +53,7 @@ def ai_formatter_request(user_input):
     prompt = get_temp_task_file()
 
     # send a request to openai and ask it to generate a bash script to execute what the user wants
-    openai.api_key = "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"
+    openai.api_key = "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"
     response = openai.Completion.create(
     model="text-davinci-002",
     prompt=prompt,
@@ -71,7 +71,7 @@ def ai_formatter_request(user_input):
 
 def ai_supervisor_request(code):
     # send a request to openai and ask it to generate a bash script to fix the error
-    openai.api_key = "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"
+    openai.api_key = "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"
     response = openai.Completion.create(
     model="davinci",
     prompt=code,

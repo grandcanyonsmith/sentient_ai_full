@@ -17,187 +17,150 @@ import re
 
 import macro
 
+if __name__ == "__main__":
+    print("Hello World!")
 
+import os
 
-def get_function_code(function_name, file_name):
+def get_files_list(path):
+    """This function get a list of files. This function
+    can only access files in its directory and not the
+    sub directories.
+
+    Args:
+        path(str): string containing the path
+
+    Returns:
+        files(list): a list of files
     """
-    Gets the code of a function in a file.
-    :param function_name: The name of the function to get the code of.
-    :param file_name: The name of the file to search in.
-    :return: The code of the function.
+    import os
+    files = [file for file in os.listdir(path) if os.path.isfile(path + "/" + file)]
+    return files
+
+if __name__ == "__main__":
+    print get_files_list("path/to/directory")
+
+
+
+
+def get_comments(self, max_results=None):
     """
-    with open(file_name, 'r') as file:
-        code = file.read()
+    List all the comments for the public section of your talk
 
-    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
-    if not function_def:
-        raise Exception("Could not find function definition for " + function_name)
-    function_def = function_def.group()
-    # Find the beginning and end of the function code:
-    function_begin = code.find(function_def)
-    function_end = function_begin + len(function_def)
-    # to find the end, we need to find the next function definition (or the end of the file):
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
-    if next_function_def:
-        indentation_level = function_def.count('\t') + 1
-        # Get the indentation level so we don't want any lines that have a lesser indentation
-        while code[function_end:].startswith('\t' * indentation_level):
-            function_end += 1
-        function_end += next_function_def.start() - 1
-    else:
-        function_end = len(code)
+    Example:
 
-    return code[function_begin:function_end +1 ]
+    >>> for comment in talk.get_comments():
+    ...     print comment.content
 
-
-def edit_code(code, command):
+    :rtype: list of :class:`Comment`
     """
-    This function takes in a code and a command and returns the edited code.
-    """
-    openai.api_key = "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"
-    response = openai.Edit.create(
-    model="code-davinci-edit-001",
-    input=code,
-    instruction=command,
-    temperature=0,
-    top_p=.9
-    )
-    new_code = response.choices[0].text
-    return new_code
 
+url = self.comments_api_url
+
+comments = []
+
+while True:
+    response = self._get(url)
+
+    comments.extend(Comment(comment) for comment in response.get('comments', []))
+
+    if response.get('next_page') is None or max_results and len(comments) >= max_results:
+        break
+
+    url = response['next_page']
+
+    return comments[:max_results]
+
+
+
+def function():
+    """Docstring
+    """
+
+def replace_function(A):
+    """
+    Returns value A.
     
+    >>> replace_function('A')
+    'A'
 
-
-
-
-
-
-
-
-
-
-
-
-
-def indent_code(code, indentation_level):
-    return '\t' * indentation_level + code.replace('\n', '\n' + '\t' * indentation_level)
-
-
-def replace_function(function_name, file_name, new_code):
     """
-    Replaces the code of a function in a file.
-    
-    :param function_name: The name of the function to replace.
-    :param file_name: The name of the file to replace the function in.
-    :param new_code: The new code of the function.
-    :return: The new code of the file.
+    return A
+
+if __name__ == '__main__':
+    import doctest
+    import os
+    os.environ['TERM'] = 'linux' # Suppress ^[[?1034h
+    doctest.testmod()
+"main"
+
+def main():
+	"""Function definition is here"""
+	pass
+
+"""
+function to ask user for a float and return the float
+"""
+
+def return_float():
     """
-    with open(file_name, 'r') as file:
-        code = file.read()
-    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE | re.DOTALL)
-    if function_def is None:
-        raise Exception('Could not find function definition for ' + function_name)
-
-    function_begin = code.find(function_def.group())
-    function_end = function_begin + len(function_def.group())
-
-    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE | re.DOTALL)
-    if next_function_def:
-        indentation_level = function_def.group().count('\t') + 1
-
-        while code[function_end:].startswith('\t' * indentation_level) or code[function_end:].startswith('\n'):
-            function_end += 1
-        function_end += next_function_def.start()
-
-    else:
-        function_end = len(code)
-
-    new_code = indent_code(new_code, function_def.group().count('\t'))
-
-    code = code[:function_begin] + new_code + code[function_end:] + '\n\n'
-
-    with open(file_name, 'w') as file:
-        file.write(code)
-    return code
-
-
-
-
-
-
-
-def list_functions(file_name):
-    '''
-    Get a list of all the functions in a file
-    :param file_name: Name of file to read
-    :return: a list of function names in the file
-    '''
-    with open(file_name, 'r') as file:
-        code = file.read()
-    lines = code.split('\n')
-    functions = []
-    for line in lines:
-        if line.startswith('def'):
-            functions.append(line.strip().split('(')[0].split()[1])
-        else:
-            continue
-    return functions
-
-
-
-
-
-
-def select_function(file_name, command):
+    Ask user for a float and return the float
     """
-    Prints a list of all the functions in the file and asks the user which function they want to see the code for.
-    :param file_name: The name of the file.
-    :param function_name: The name of the function.
-    :return: The code for the function.
+    while True:
+        try:
+            return float(input("Please enter a number: "))
+        except ValueError:
+            print("That was not a number")
+
+if __name__ == "__main__":
+    print("\n", return_float())
+
+
+
+def calc_function(function, value_1, value_2):
     """
-    all_functions = list_functions(file_name)
-    function_name, confidence = select_classification_label(command, all_functions)
-    return file_name, function_name
-
-# if __name__ == '__main__':
-#     command = input("What do you want to do? ")
-#     directory_contents, best_label, confidence = get_directory_contents(command)
-#     file_name, function_name = select_function(best_label, command)
-#     replace_function(function_name, file_name, edit_code(get_function_code(function_name, file_name),command))
-
-    # select_function(file_name=filename, command=command)
+    :param function: function
+    :param value_1: int
+    :param value_2: int
+    :return: result of function applied to two values
+    """
+    return function(value_1, value_2)
 
 
+def add(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: addition result of two values
+    """
+    return value_1 + value_2
 
 
+def subtract(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: subtraction result of two values
+    """
+    return value_1 - value_2
 
 
+def multiply(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: multiplication result of two values
+    """
+    return value_1 * value_2
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def divide(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: division result of two values
+    """
+    return value_1 / value_2
 
 
 

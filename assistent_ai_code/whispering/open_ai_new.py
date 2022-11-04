@@ -40,7 +40,7 @@ presence_penalty = float(presence_penalty)
 
 past_text = ""
 def open_ai(past_text, prompt, temperature, max_tokens, top_p, frequency_penalty, presence_penalty):
-    openai.api_key = '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'
+    openai.api_key = "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"
     prompt = prompt + past_text + "AI: ",
     response = openai.Completion.create(
     model="text-davinci-002",

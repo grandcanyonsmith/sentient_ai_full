@@ -8,7 +8,7 @@ import openai
 past_text = ""
 
 def open_ai(past_text):
-    openai.api_key = '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'
+    openai.api_key = "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"
     prompt = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\n" + past_text + "\nAI: "
     response = openai.Completion.create(
     model="text-davinci-002",
@@ -59,7 +59,7 @@ with open('open_ai_variables.csv', 'w') as f:
 
 
 # def open_ai(past_text):
-#     openai.api_key = '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'
+#     openai.api_key = "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"
 #     prompt = prompt + '\n' + past_text + "\nAI: "
 #     response = openai.Completion.create(
 #     model="text-davinci-002",
@@ -114,7 +114,7 @@ presence_penalty = float(presence_penalty)
 
 past_text = ""
 def open_ai(past_text, prompt, temperature, max_tokens, top_p, frequency_penalty, presence_penalty):
-    openai.api_key = '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'
+    openai.api_key = "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"
     prompt = prompt + past_text + "AI: ",
     response = openai.Completion.create(
     model="text-davinci-002",

@@ -1,0 +1,3848 @@
+To create a `list`, try to use `list` comprehension instead of a loop. List comprehension is the preferred way to make a list using Python, and it's simpler and easier to understand than using a loop.
+
+[Learn more](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions)
+def get_stock_resistance_for_any_interval(ticker,current_price,previous_close):
+    resistance_levels = ['15','30','60','D','W','M']
+
+    resistance_level_bank = [
+        check_if_resistance_broken(
+            ticker, level, current_price, previous_close
+        )
+        for level in resistance_levels
+    ]
+
+    return next(
+        (
+            resistance_level
+            for resistance_level in resistance_level_bank
+            if resistance_level['break_through'] == 'True'
+        ),
+        None,
+    )
+
+def get_stock_resistance_for_any_interval(ticker,current_price,previous_close):
+    resistance_level_bank = [
+        check_if_resistance_broken(
+            ticker, level, current_price, previous_close
+        )
+        for level in ['15','30','60','D','W','M']
+    ]
+
+    return next(
+        (
+            resistance_level
+            for resistance_level in resistance_level_bank
+            if resistance_level['break_through'] == 'True'
+        ),
+        None,
+    )
+To check if a container or sequence (string, list, tuple) is empty, use `if not val`. Do not compare its length using `if len(val) == 0` or `if len(val) > 0`
+
+ [Learn more](https://www.python.org/dev/peps/pep-0008/#programming-recommendations#:~:text=if%20not%20seq)
+def get_resistance_levels(ticker, interval):
+    url = f'https://finnhub.io/api/v1/scan/support-resistance?symbol={str(ticker)}&resolution={str(interval)}&token={finnhub_api_key_2}'
+
+    r = requests.get(url)
+    resistance_levels = r.json()
+    resistance_levels = resistance_levels['levels']
+
+    if len(resistance_levels) != 0:
+        for x in resistance_levels:
+            json = {"interval": interval,"resistance":x}
+            all_resistances.append(json)
+    return resistance_levels
+def get_resistance_levels(ticker, interval):
+    url = f'https://finnhub.io/api/v1/scan/support-resistance?symbol={str(ticker)}&resolution={str(interval)}&token={finnhub_api_key_2}'
+
+    r = requests.get(url)
+    resistance_levels = r.json()
+    resistance_levels = resistance_levels['levels']
+
+    if resistance_levels:
+        for x in resistance_levels:
+            json = {"interval": interval,"resistance":x}
+            all_resistances.append(json)
+    return resistance_levels
+It appears you are unpacking more than three variables while using a function that returns more than one variable. Using a large number of return values is prone to errors. We recommend that you return a small class or `namedtuple` instance instead.
+
+[Learn more](https://docs.python.org/3/library/typing.html#typing.NamedTuple)
+
+Similar issue at line number 146.
+def create_resistance_report(ticker,current_price,previous_close):
+    get_resistance = get_stock_resistance_for_any_interval(ticker,current_price,previous_close)
+
+    if get_resistance is not None:
+        next_highest_resistance, interval = get_next_high_for_any_interval(current_price)
+        resistance = float(get_resistance['Resistance']).__round__(2)
+        break_through = get_resistance['break_through']
+        past_time_interval = get_resistance['time_interval']
+        next_time_interval = interval
+        price = get_resistance['price']
+        next_resistance = float(next_highest_resistance).__round__(2)
+        words = f" crossed resistance today at {str(resistance)} for {past_time_interval} time interval. Price is {str(price)}."
+
+    else:
+        break_through = " "
+        words = "No resistance broken"
+        past_time_interval = " "
+        next_time_interval = " "
+        resistance = " "
+        next_resistance = " "
+        price = " "
+
+    all_resistances.clear()
+    return words, break_through, past_time_interval, next_time_interval, resistance, next_resistance
+
+def create_resistance_report(ticker,current_price,previous_close):
+    get_resistance = get_stock_resistance_for_any_interval(ticker,current_price,previous_close)
+
+    if get_resistance is not None:
+        next_highest_resistance, interval = get_next_high_for_any_interval(current_price)
+        resistance = float(get_resistance['Resistance']).__round__(2)
+        break_through = get_resistance['break_through']
+        past_time_interval = get_resistance['time_interval']
+        next_time_interval = interval
+        price = get_resistance['price']
+        next_resistance = float(next_highest_resistance).__round__(2)
+        words = f" crossed resistance today at {str(resistance)} for {past_time_interval} time interval. Price is {str(price)}."
+
+    else:
+        break_through = " "
+        words = "No resistance broken"
+        past_time_interval = " "
+        next_time_interval = " "
+        resistance = " "
+        next_resistance = " "
+        price = " "
+
+    all_resistances.clear()
+    return words, break_through, past_time_interval, next_time_interval, resistance, next_resistance, price
+It appears that you are generically passing an `Exception` object without performing any other operation on it. This may hide error conditions that can otherwise be quickly detected and addressed. We recommend that you catch a more specific exception. If the code must broadly catch all exceptions, consider logging the stack trace using the [logging.exception()](https://docs.python.org/3/library/logging.html#logging.exception) API. For example,
+
+```
+try:
+    x = 1 / 0
+except ZeroDivisionError as e:
+    logging.exception('ZeroDivisionError: %s', e)
+
+```
+def nyse(stock, time_interval):
+    try:
+        stock_exchange = 'NYSE'
+        handler = TA_Handler(
+            symbol= stock,
+            exchange=stock_exchange,
+            screener="america",
+            interval=time_interval,
+            timeout=None
+        )
+
+        # analysis = 
+        summary = handler.get_analysis().summary
+        overall_recommendation = summary['RECOMMENDATION']
+        print(time_interval,"=",overall_recommendation)
+        return overall_recommendation
+    except:
+        Exception
+    
+
+
+def nyse(stock, time_interval):
+    try:
+        stock_exchange = 'NYSE'
+        handler = TA_Handler(
+            symbol= stock,
+            exchange=stock_exchange,
+            screener="america",
+            interval=time_interval,
+            timeout=None
+        )
+
+        # analysis = 
+        summary = handler.get_analysis().summary
+        overall_recommendation = summary['RECOMMENDATION']
+        print(time_interval,"=",overall_recommendation)
+        return overall_recommendation
+    except:
+        logging.exception('ZeroDivisionError: %s', e)
+    
+It appears your code contains a hardcoded API Gateway API Key. Hardcoded secrets or credentials can allow attackers to bypass authentication methods and perform malicious actions. We recommend revoking access to resources using this credential and storing future credentials in a management service such as [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/).
+
+[Learn more about the use of hardcoded credentials](https://cwe.mitre.org/data/definitions/798.html)
+def look_up_exchange(tick):
+    url = f'https://financialmodelingprep.com/api/v3/search?query={tick}&limit=10&apikey=e49e22b0865cfeea71aa0771ddf965a1'
+
+    r = requests.get(url)
+    return r.json()[0].get('exchangeShortName')
+
+def look_up_exchange(tick):
+    url = f'https://financialmodelingprep.com/api/v3/search?query={tick}&limit=10&apikey=API_KEY'
+
+    r = requests.get(url)
+    return r.json()[0].get('exchangeShortName')
+**Problem**
+This line of code might contain a resource leak. Resource leaks can cause your system to slow down or crash.
+
+**Fix**
+Consider closing the following resource: *session*. The resource is allocated by call *sessions.Session*. Currently, there are execution paths that do not contain closure statements, for example, when *Session.get()* throws an exception. To prevent this resource leak, close *session* in a try-finally block or declare it using a `with` statement.
+
+**More info**
+[View details about the `with` statement in the Python developer's guide](https://www.python.org/dev/peps/pep-0343/) (external link).
+def scrape_highest_iv_stocks():
+    session = requests.Session()
+    main_page_url = 'https://www.barchart.com/options/highest-implied-volatility/highest?sector=stock'
+    url = f"https://www.barchart.com/proxies/core-api/v1/options/get?fields=symbol,baseSymbol,baseLastPrice,baseSymbolType,symbolType,strikePrice,expirationDate,daysToExpiration,bidPrice,midpoint,askPrice,lastPrice,volume,openInterest,volumeOpenInterestRatio,volatility,tradeTime,symbolCode,hasOptions&orderBy=volatility&baseSymbolTypes=stock&between(lastPrice,.10,)=&between(daysToExpiration,15,)=&between(tradeTime,{week_ago_date},{today_date})=&orderDir=desc&between(volatility,60,)=&limit=200&between(volume,500,)=&between(openInterest,100,)=&in(exchange,(AMEX,NASDAQ,NYSE))=&meta=field.shortName,field.type,field.description&hasOptions=true&raw=1"
+
+    payload={}
+    headers = {
+    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+    'Accept': 'application/json',
+    'DNT': '1',
+    'sec-ch-ua-mobile': '?0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Dest': 'empty'
+    }
+
+    r = session.get(main_page_url,headers=headers)
+    headers['X-XSRF-TOKEN'] = unquote(unquote(session.cookies.get_dict()['XSRF-TOKEN']))
+    response = session.request("GET", url, headers=headers, data=payload)
+    return [stock_ticker['baseSymbol'] for stock_ticker in response.json()['data'] if stock_ticker not in highest_iv_stocks]
+
+
+
+
+
+def scrape_highest_iv_stocks():
+    with requests.Session() as session:
+    main_page_url = 'https://www.barchart.com/options/highest-implied-volatility/highest?sector=stock'
+    url = f"https://www.barchart.com/proxies/core-api/v1/options/get?fields=symbol,baseSymbol,baseLastPrice,baseSymbolType,symbolType,strikePrice,expirationDate,daysToExpiration,bidPrice,midpoint,askPrice,lastPrice,volume,openInterest,volumeOpenInterestRatio,volatility,tradeTime,symbolCode,hasOptions&orderBy=volatility&baseSymbolTypes=stock&between(lastPrice,.10,)=&between(daysToExpiration,15,)=&between(tradeTime,{week_ago_date},{today_date})=&orderDir=desc&between(volatility,60,)=&limit=200&between(volume,500,)=&between(openInterest,100,)=&in(exchange,(AMEX,NASDAQ,NYSE))=&meta=field.shortName,field.type,field.description&hasOptions=true&raw=1"
+
+    payload={}
+    headers = {
+    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+    'Accept': 'application/json',
+    'DNT': '1',
+    'sec-ch-ua-mobile': '?0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Dest': 'empty'
+    }
+
+    r = session.get(main_page_url,headers=headers)
+    headers['X-XSRF-TOKEN'] = unquote(unquote(session.cookies.get_dict()['XSRF-TOKEN']))
+    response = session.request("GET", url, headers=headers, data=payload)
+    return [stock_ticker['baseSymbol'] for stock_ticker in response.json()['data'] if stock_ticker not in highest_iv_stocks]
+
+
+
+The naive datetime objects are treated by many datetime methods as local times, it is preferred to use aware datetimes to represent times in UTC. The recommended way to create an aware datetime object representing a specific timestamp in UTC is by passing `tzinfo` as an argument to the method.
+
+[Learn more](https://docs.python.org/3/library/datetime.html#aware-and-naive-objects)
+def scrape_highest_iv_stocks():
+    session = requests.Session()
+    main_page_url = 'https://www.barchart.com/options/highest-implied-volatility/highest?sector=stock'
+    url = f"https://www.barchart.com/proxies/core-api/v1/options/get?fields=symbol,baseSymbol,baseLastPrice,baseSymbolType,symbolType,strikePrice,expirationDate,daysToExpiration,bidPrice,midpoint,askPrice,lastPrice,volume,openInterest,volumeOpenInterestRatio,volatility,tradeTime,symbolCode,hasOptions&orderBy=volatility&baseSymbolTypes=stock&between(lastPrice,.10,)=&between(daysToExpiration,15,)=&between(tradeTime,{week_ago_date},{today_date})=&orderDir=desc&between(volatility,60,)=&limit=200&between(volume,500,)=&between(openInterest,100,)=&in(exchange,(AMEX,NASDAQ,NYSE))=&meta=field.shortName,field.type,field.description&hasOptions=true&raw=1"
+
+    payload={}
+    headers = {
+    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+    'Accept': 'application/json',
+    'DNT': '1',
+    'sec-ch-ua-mobile': '?0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Dest': 'empty'
+    }
+
+    r = session.get(main_page_url,headers=headers)
+    headers['X-XSRF-TOKEN'] = unquote(unquote(session.cookies.get_dict()['XSRF-TOKEN']))
+    response = session.request("GET", url, headers=headers, data=payload)
+    return [stock_ticker['baseSymbol'] for stock_ticker in response.json()['data'] if stock_ticker not in highest_iv_stocks]
+
+
+
+
+
+def scrape_highest_iv_stocks():
+    session = requests.Session()
+    main_page_url = 'https://www.barchart.com/options/highest-implied-volatility/highest?sector=stock'
+    url = f"https://www.barchart.com/proxies/core-api/v1/options/get?fields=symbol,baseSymbol,baseLastPrice,baseSymbolType,symbolType,strikePrice,expirationDate,daysToExpiration,bidPrice,midpoint,askPrice,lastPrice,volume,openInterest,volumeOpenInterestRatio,volatility,tradeTime,symbolCode,hasOptions&orderBy=volatility&baseSymbolTypes=stock&between(lastPrice,.10,)=&between(daysToExpiration,15,)=&between(tradeTime,{week_ago_date},{today_date})=&orderDir=desc&between(volatility,60,)=&limit=200&between(volume,500,)=&between(openInterest,100,)=&in(exchange,(AMEX,NASDAQ,NYSE))=&meta=field.shortName,field.type,field.description&hasOptions=true&raw=1"
+
+    payload={}
+    headers = {
+    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+    'Accept': 'application/json',
+    'DNT': '1',
+    'sec-ch-ua-mobile': '?0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Dest': 'empty'
+    }
+
+    r = session.get(main_page_url,headers=headers)
+    headers['X-XSRF-TOKEN'] = unquote(unquote(session.cookies.get_dict()['XSRF-TOKEN']))
+    response = session.request("GET", url, headers=headers, data=payload)
+    return [stock_ticker['baseSymbol'] for stock_ticker in response.json()['data'] if stock_ticker not in highest_iv_stocks]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changes
+Using `Exception` and `BaseException` can make your code prone to errors and difficult to maintain. Instead, we recommend using one of the [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) or creating a custom exception class that is derived from `Exception` or one of its subclasses.
+
+
+
+Old Code:
+def get_function_code(function_name, file_name):
+    """
+    Gets the code of a function in a file.
+    :param function_name: The name of the function to get the code of.
+    :param file_name: The name of the file to search in.
+    :return: The code of the function.
+    """
+    with open(file_name, 'r') as file:
+        code = file.read()
+    # first find the function definition:
+    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
+    if not function_def:
+        raise ValueError("Could not find function definition for " + function_name + " in " + file_name)  # [bad-exception]
+    function_def = function_def.group()
+    # now find the beginning and end of the function code:
+    function_begin = code.find(function_def)
+    function_end = function_begin + len(function_def)
+    # to find the end, we need to find the next function definition (or the end of the file):
+    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
+    if next_function_def:
+        indentation_level = function_def.count('\t') + 1
+        # now get the indentation level, we don't want any lines that have a lesser indentation
+        while code[function_end:].startswith('\t' * indentation_level):
+            function_end += 1
+        function_end += next_function_def.start() - 1
+    else:
+        function_end = len(code)
+    # now get the function code:
+    return code[function_begin:function_end]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+New Code:
+get_function_code_
+
+
+
+Changes
+Using `Exception` and `BaseException` can make your code prone to errors and difficult to maintain. Instead, we recommend using one of the [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) or creating a custom exception class that is derived from `Exception` or one of its subclasses.
+
+
+
+Old Code:
+def get_function_code(function_name, file_name):
+    """
+    Gets the code of a function in a file.
+    :param function_name: The name of the function to get the code of.
+    :param file_name: The name of the file to search in.
+    :return: The code of the function.
+    """
+    with open(file_name, 'r') as file:
+        code = file.read()
+    # first find the function definition:
+    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
+    if not function_def:
+        raise ValueError("Could not find function definition for " + function_name + " in " + file_name)  # [bad-exception]
+    function_def = function_def.group()
+    # now find the beginning and end of the function code:
+    function_begin = code.find(function_def)
+    function_end = function_begin + len(function_def)
+    # to find the end, we need to find the next function definition (or the end of the file):
+    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
+    if next_function_def:
+        indentation_level = function_def.count('\t') + 1
+        # now get the indentation level, we don't want any lines that have a lesser indentation
+        while code[function_end:].startswith('\t' * indentation_level):
+            function_end += 1
+        function_end += next_function_def.start() - 1
+    else:
+        function_end = len(code)
+    # now get the function code:
+    return code[function_begin:function_end]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+New Code:
+
+
+get_function_code_
+
+
+
+Changes
+Using `Exception` and `BaseException` can make your code prone to errors and difficult to maintain. Instead, we recommend using one of the [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) or creating a custom exception class that is derived from `Exception` or one of its subclasses.
+
+
+
+Old Code:
+def append_code():
+    # first, ask what file I want to append the code to
+    file_name = input("What file do you want to append the code to? ").strip()
+    line_number = int(input("What line number do you want to append the code to? ").strip())
+    instructions = input("What do you want to append? ").strip()
+    openai.api_key = "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"
+    response = openai.Edit.create(
+    model="code-davinci-edit-001",
+    input="",
+    instruction=instructions,
+    temperature=0,
+    top_p=1
+    )
+    new_code = response.choices[0].text
+    print(new_code)
+    # now append the code to the line number
+    # now append the code to the file on the line number that I want
+    append_code_to_file(file_name, line_number, new_code)    
+    append_more = input("Do you want to append more code? ")
+    if append_more.lower() == 'yes':
+        append_code()
+    else:
+        return code
+    # now return the code
+    return code
+
+
+
+
+
+
+
+
+
+New Code:
+
+
+raise_exception
+
+
+
+Changes
+Using `Exception` and `BaseException` can make your code prone to errors and difficult to maintain. Instead, we recommend using one of the [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) or creating a custom exception class that is derived from `Exception` or one of its subclasses.
+
+
+
+Old Code:
+def edit_code(code):
+    """
+    This function takes in a string of code and returns a string of code that 
+    has been edited based on the user's input.
+    """
+    openai.api_key = "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"
+    desired_changes = input("What changes do you want to make to the code? ")
+    response = openai.Edit.create(
+    model="code-davinci-edit-001",
+    input=code,
+    instruction=desired_changes,
+    temperature=0,
+    top_p=1
+    )
+    new_code = response.choices[0].text
+    print(new_code)
+    return new_cod
+
+
+New Code:
+
+
+class CustomException(Exception):
+    pass
+
+
+
+Changes
+Using `Exception` and `BaseException` can make your code prone to errors and difficult to maintain. Instead, we recommend using one of the [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) or creating a custom exception class that is derived from `Exception` or one of its subclasses.
+
+
+
+Old Code:
+def indent_code(code, indentation_level):
+    """
+    Indents a code block by the given indentation level.
+    :param code: The code to indent.
+    :param indentation_level: The indentation level.
+    :return: The indented code.
+    """
+    return '\t' * indentation_level + code.replace('\n', '\n' + '\t' * indentation_level)
+
+
+New Code:
+
+
+def is_even(number):
+    if number % 2 == 0:
+        return True
+    else:
+        return False
+
+
+def is_int(number):
+    if number == int(number):
+        return True
+    else:
+        return False
+
+
+def digit_sum(n):
+    total = 0
+    while n > 0:
+        total += n % 10
+        n = n // 10
+    return total
+
+
+def factorial(x):
+    total = 1
+    while x > 1:
+        total *= x
+        x -= 1
+    return total
+
+
+def is_prime(x):
+    if x < 2:
+        return False
+    else:
+        for n in range(2, x - 1):
+            if x % n == 0:
+                return False
+        return True
+
+
+def reverse(text):
+    word = ""
+    l = len(text) - 1
+    while l >= 0:
+        word = word + text[l]
+        l -= 1
+    return word
+
+
+def anti_vowel(text):
+    t = ""
+    for c in text:
+        for i in "ieaouIEAOU":
+            if c == i:
+                c = ""
+            else:
+                c = c
+        t = t + c
+    return t
+
+
+score = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
+         "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
+         "l": 1, "o": 1, "n": 1, "q": 10, "p": 3, "s": 1,
+         "r": 1, "u": 1, "t": 1, "w": 4, "v": 4, "y": 4,
+         "x": 8, "z": 10}
+
+
+def scrabble_score(word):
+    total = 0
+    for letter in word:
+        for leter in score:
+            if letter.lower() == leter:
+                total = total + score[leter]
+    return total
+
+
+def censor(text, word):
+    words = text.split()
+    result = ''
+    stars = '*' * len(word)
+    count = 0
+    for i in words:
+        if i == word:
+            words[count] = stars
+        count += 1
+    result = ' '.join(words)
+
+    return result
+
+
+def count(sequence, item):
+    found = 0
+    for i in sequence:
+        if i == item:
+            found += 1
+    return found
+
+
+def purify(numbers):
+    new_list = []
+    for i in numbers:
+        if i % 2 == 0:
+            new_list.append(i)
+    return new_list
+
+
+def product(numbers):
+    total = 1
+    for i in numbers:
+        total *= i
+    return total
+
+
+def remove_duplicates(numbers):
+    new_list = []
+    for i in numbers:
+        if i not in new_list:
+            new_list.append(i)
+    return new_list
+
+
+def median(numbers):
+    numbers.sort()
+    if len(numbers) % 2 == 0:
+        middle_index_1 = int(len(numbers) / 2) - 1
+        middle_index_2 = middle_index_1 + 1
+        return (numbers[middle_index_1] + numbers[middle_index_2]) / 2.0
+    else:
+        middle_index = int(len(numbers) / 2)
+        return numbers[middle_index]
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def reverse(text):
+    word = ""
+    l = len(text) - 1
+    while l >= 0:
+        word = word + text[l]
+        l -= 1
+    return word
+
+
+
+New Code:
+
+
+def reverse(text):
+    return text[::-1]
+
+def is_palindrome(text):
+    return text == reverse(text)
+
+something = input('Enter text: ')
+if (is_palindrome(something)):
+    print("Yes, it is a palindrome")
+else:
+    print("No, it is not a palindrome")
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def is_palindrome(text):
+    return text == reverse(text)
+
+
+New Code:
+
+
+def is_palindrome(word):
+    word = word.lower()
+    return word[::-1] == word
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_function_code_new(function_name, file_name):
+    """
+    Gets the code of a function in a file.
+    :param function_name: The name of the function to get the code of.
+    :param file_name: The name of the file to search in.
+    :return: The code of the function.
+    """
+    with open(file_name, 'r') as file:
+        code = file.read()
+    # first find the function definition:
+    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE).group()
+    # now find the beginning and end of the function code:
+    function_begin, function_end = code.find(function_def), function_begin + len(function_def)
+    # to find the end, we need to find the next function definition (or the end of the file):
+    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE).group()
+    indentation_level = function_def.count('\t') + 1
+    # now get the indentation level, we don't want any lines that have a lesser indentation
+    while code[function_end:].startswith('\t' * indentation_level):
+        function_end += 1
+    function_end += next_function_def.start() - 1
+    # now get the function code:
+    return code[function_begin:function_end]
+
+
+
+
+
+New Code:
+
+
+get_function_code_new()
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def edit_code(code, command):
+    """
+    This function takes in a code and a command and returns the edited code.
+    """
+    print("YO")
+    openai.api_key = "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"
+    response = openai.Edit.create(
+    model="code-davinci-edit-001",
+    input=code,
+    instruction=command,
+    temperature=0,
+    top_p=1,
+    )
+    new_code = response.choices[0].text
+    print("asdfasdfa", new_code)
+    return new_code
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+New Code:
+
+
+import os
+import re
+
+def get_files_list():
+    files = os.listdir()
+    for file in files:
+        if re.search(r'^\.\w+', file):
+            files.remove(file)
+    return files
+
+def get_list_without_txt_file(files):
+    txt_file = [file for file in files if file.endswith('.txt')]
+    files_without_txt_file = list(set(files) - set(txt_file))
+    return files_without_txt_file
+
+def create_txt_file(txt_file_name, files):
+    if files:
+        f = open(txt_file_name, 'w')
+        for file in files:
+            f.write(f'{file}\n')
+        f.close()
+
+if __name__ == '__main__':
+    files = get_files_list()
+    files = get_list_without_txt_file(files)
+    create_txt_file('text.txt', files)
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_function_code(function_name, file_name):
+    """
+    Gets the code of a function in a file.
+    :param function_name: The name of the function to get the code of.
+    :param file_name: The name of the file to search in.
+    :return: The code of the function.
+    """
+    with open(file_name, 'r') as file:
+        code = file.read()
+
+    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
+    if not function_def:
+        raise ValueError("Could not find function definition for " + function_name + " in " + file_name)
+    function_def = function_def.group()
+    # Find the beginning and end of the function code:
+    function_begin = code.find(function_def)
+    function_end = function_begin + len(function_def)
+    # to find the end, we need to find the next function definition (or the end of the file):
+    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
+    if next_function_def:
+        indentation_level = function_def.count('\t') + 1
+        # Get the indentation level so we don't want any lines that have a lesser indentation
+        while code[function_end:].startswith('\t' * indentation_level):
+            function_end += 1
+        function_end += next_function_def.start() - 1
+    else:
+        function_end = len(code)
+
+    return code[function_begin:function_end +1 ]
+
+
+New Code:
+
+
+if __name__ == "__main__":
+    print("Hello World!")
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_files_with_extension(extension, directory='.'):
+    """
+    Finds all the files with the given extension in the given directory.
+    :param extension: The extension to find.
+    :param directory: The directory to search in (defaults to the current directory).
+    :return: A list of all the files with the given extension.
+    """
+    if not directory:
+        raise ValueError('directory cannot be empty')
+    # First, get all the files in the directory:
+    files = glob.glob(f'{directory}/*')
+    return [file for file in files if file.endswith(extension)]
+
+
+
+
+New Code:
+
+
+from os import listdir
+
+
+def get_files_with_extension(directory, extension):
+    return [file for file in listdir(directory) if file.endswith(extension)]
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def replace_function(function_name, file_name, new_code):
+    """
+    Replaces the code of a function in a file.
+    :param function_name: The name of the function to replace.
+    :param file_name: The name of the file to search in.
+    :param new_code: The new code of the function.
+    :return: None
+    """
+    with open(file_name, 'r') as file:
+        code = file.read()
+    # first find the function definition:
+    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE)
+    if not function_def:
+        raise Exception("Could not find function definition for " + function_name)
+    function_def = function_def.group()
+    # now find the beginning and end of the function code:
+    function_begin = code.find(function_def)
+    function_end = function_begin + len(function_def)
+    # to find the end, we need to find the next function definition (or the end of the file):
+    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE)
+    if next_function_def:
+        indentation_level = function_def.count('\t') + 1
+        # now get the indentation level, we don't want any lines that have a lesser indentation
+        while code[function_end:].startswith('\t' * indentation_level):
+            function_end += 1
+        function_end += next_function_def.start()
+    else:
+        function_end = len(code)
+    new_code = indent_code(new_code, function_def.count('\t'))
+    code = code[:function_begin] + '\n\n' + new_code + code[function_end:] + '\n\n'
+    # now write the new code to the file:
+    with open(file_name, 'w') as file:
+        file.write(code)
+    # now ask the user if they would like to make any changes:
+    print("Would you like to make any changes to the function? (yes/no)")
+    answer = input()
+
+    while answer != 'no':
+        print("Would you like to make any changes to the function? (yes/no)")
+        answer = input()
+    if answer == 'yes':
+    
+        replace_function(function_name, file_name, edit_code(get_function_code(function_name, file_name)))
+
+
+New Code:
+
+
+replace_function_name_with_better_name
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def scrabble_score(word):
+    total = 0
+    for letter in word:
+        for leter in score:
+            if letter.lower() == leter:
+                total = total + score[leter]
+    return total
+
+
+
+New Code:
+
+
+def score(word):
+    points = {
+        1: ["A", "E", "I", "O", "U", "L", "N", "R", "S", "T"],
+        2: ["D", "G"],
+        3: ["B", "C", "M", "P"],
+        4: ["F", "H", "V", "W", "Y"],
+        5: ["K"],
+        8: ["J", "X"],
+        10: ["Q", "Z"]
+    }
+    # sum(points[letter] for letter in word)
+    sum_ = 0
+    for letter in word:
+        for i in points.keys():
+            if letter in points[i]:
+                sum_ += i
+    return sum_
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def indent_code(code, indentation_level):
+    return '\t' * indentation_level + code.replace('\n', '\n' + '\t' * indentation_level)
+
+
+
+New Code:
+
+
+def indent_code(code):
+    return code
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def is_int(number):
+    if number == int(number):
+        return True
+    else:
+        return False
+
+
+
+New Code:
+
+
+is_int # Make this function more like the zen of python
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def score(word):
+    points = {
+        1: ["A", "E", "I", "O", "U", "L", "N", "R", "S", "T"],
+        2: ["D", "G"],
+        3: ["B", "C", "M", "P"],
+        4: ["F", "H", "V", "W", "Y"],
+        5: ["K"],
+        8: ["J", "X"],
+        10: ["Q", "Z"]
+    }
+    # sum(points[letter] for letter in word)
+    sum_ = 0
+    for letter in word:
+        for i in points.keys():
+            if letter in points[i]:
+                sum_ += i
+    return sum_
+
+
+
+
+New Code:
+
+
+def get_next_letter_in_sequence(letter):
+    next_letter = chr(ord(letter) + 1)
+    if next_letter == "i":
+        next_letter = "l"
+    if next_letter == "o":
+        next_letter = "p"
+    if next_letter == "q":
+        next_letter = "r"
+    if next_letter == "s":
+        next_letter = "t"
+    if next_letter == "u":
+        next_letter = "v"
+    if next_letter == "w":
+        next_letter = "x"
+    if next_letter == "y":
+        next_letter = "z"
+    if next_letter == "[":
+        next_letter = "a"
+    if next_letter == "{":
+        next_letter = "a"
+    return next_letter
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def list_functions(file_name):
+    '''
+    Get a list of all the functions in a file
+    :param file_name: Name of file to read
+    :return: a list of function names in the file
+    '''
+    with open(file_name, 'r') as file:
+        code = file.read()
+    lines = code.split('\n')
+    functions = []
+    for line in lines:
+        if line.startswith('def'):
+            functions.append(line.strip().split('(')[0].split()[1])
+        else:
+            continue
+    return functions
+
+
+
+
+
+
+
+New Code:
+
+
+#!/usr/bin/python
+"""
+This is a module docstring, sort of like a header for the file.
+Nothing specific, just for information.
+"""
+
+def SomeFunction():
+    """
+    This is considered the docstring for the function.
+    It is used by pydoc to generate the documentation for the function.
+
+    This function does nothing and is just here as an exampe.
+    """
+    pass
+
+def main():
+    """
+    This is the main function.  It also uses a docstring.
+    See how much easier this is to read with the comments gone.
+    """
+    SomeFunction()
+
+if __name__ == '__main__':
+    main()
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def create_txt_file(txt_file_name, files):
+    if files:
+        f = open(txt_file_name, 'w')
+        for file in files:
+            f.write(f'{file}\n')
+        f.close()
+
+
+New Code:
+
+
+#!/usr/bin/python
+#! -*- encoding:utf-8 -*-
+#!@Author:xiaoming
+#         2017/9/21
+
+import os
+
+def create_txt_file(path, txt_name):
+    '''
+    根据路径和文件名，创建一个文件。
+
+    path: 文件路径
+    txt_name: 文件名
+    '''
+    file_name = os.path.join(path, txt_name)
+    if os.path.isdir(path):
+        if os.path.isfile(file_name):
+            print 'File have already exsited.'
+        else:
+            file_handle = open(path + txt_name, 'w')
+            file_handle.close()
+            print 'Create successfully!'
+    else:
+        print 'The path is invalid, please check!'
+
+def main():
+    path = raw_input('Please input the path which you want to create the file:')
+    txt_name = raw_input('Please input the txt name which you want to create:')
+    create_txt_file(path, txt_name)
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def  get_user_input():
+    """
+    Asks the user what they would like to do to the file.
+    :return:
+    """
+    # get the file name from the user:
+    file_name = input('What file would you like to make changes to? (e.g. main.py)')
+    # check if the file exists:
+    if not os.path.isfile(file_name):
+        raise Exception('File does not exist')
+
+    # ask the user what they would like to do:
+    print('What would you like to do?\n1. Find all functions\n2. Get the code of a function\n3. Replace the code of a function')
+    # get the option from the user:
+    option = input('Enter the number of the option you would like to do:')
+    # if the option is find all functions:
+    if option == '1':
+        find_functions(file_name)
+    # if the option is get the code of a function:
+    elif option == '2':
+        function_name = input('What function would you like to get the code of?')
+        code = get_function_code(function_name, file_name)
+        print(code)
+    # if the option is replace the code of a function:
+    elif option == '3':
+        function_name = input('What function would you like to replace the code of?')
+        new_code = input('What would you like the new code to be?')
+        replace_function(function_name, file_name, new_code)
+    # if the option is not valid:
+    else:
+        raise Exception('Option is not valid')
+
+
+
+
+
+
+
+
+New Code:
+
+
+def get_user_input():
+	user_input = input()
+	return user_input
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum(n):
+    total = 0
+    while n > 0:
+        total += n % 10
+        n = n // 10
+    return total
+
+
+
+New Code:
+
+
+def digit_sum(num):
+    '''
+    Takes a positive integer and returns the sum of its digits.
+    If the number is negative, return -1.
+    '''
+    if num < 0:
+        return -1
+    else:
+        return sum(int(digit) for digit in str(num))
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_next_letter_in_sequence(letter):
+    next_letter = chr(ord(letter) + 1)
+    if next_letter == "i":
+        next_letter = "l"
+    if next_letter == "o":
+        next_letter = "p"
+    if next_letter == "q":
+        next_letter = "r"
+    if next_letter == "s":
+        next_letter = "t"
+    if next_letter == "u":
+        next_letter = "v"
+    if next_letter == "w":
+        next_letter = "x"
+    if next_letter == "y":
+        next_letter = "z"
+    if next_letter == "[":
+        next_letter = "a"
+    if next_letter == "{":
+        next_letter = "a"
+    return next_letter
+
+
+
+
+
+New Code:
+
+
+def get_next_letter_in_sequence(string):
+    """
+    >>> get_next_letter_in_sequence('A')
+    'B'
+    >>> get_next_letter_in_sequence('B')
+    'C'
+    >>> get_next_letter_in_sequence('C')
+    'D'
+    >>> get_next_letter_in_sequence('Z')
+    'AA'
+    >>> get_next_letter_in_sequence('AA')
+    'AB'
+    >>> get_next_letter_in_sequence('AZ')
+    'BA'
+    >>> get_next_letter_in_sequence('ZZ')
+    'AAA'
+    >>> get_next_letter_in_sequence('AAA')
+    'AAB'
+    """
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def indent_code(code):
+    return code
+
+
+
+
+New Code:
+
+
+indent_code
+
+
+def function():
+    """Docstring
+    """
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_list_without_txt_file(files):
+    txt_file = [file for file in files if file.endswith('.txt')]
+    files_without_txt_file = list(set(files) - set(txt_file))
+    return files_without_txt_file
+
+
+New Code:
+
+
+def get_list_without_txt_file():
+    """
+    loads from files
+    :return: list
+    """
+    return os.listdir('.')
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_user_input():
+	user_input = input()
+	return user_input
+
+
+
+
+New Code:
+
+
+""" This is a small program with 2 functions. 
+The first function asks the user to input their name and returns the input name. 
+The second function asks the user to input 2 numbers and returns their product.
+"""
+get_user_input
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum(num):
+    '''
+    Takes a positive integer and returns the sum of its digits.
+    If the number is negative, return -1.
+    '''
+    if num < 0:
+        return -1
+    else:
+        return sum(int(digit) for digit in str(num))
+
+
+
+
+New Code:
+
+
+digit_sum
+def digit_sum_recur(n):
+    """Return the sum of the first n digits of a number."""
+    while n:
+        return n % 10 + digit_sum_recur(n // 10)
+    return 0
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_next_letter_in_sequence(string):
+    """
+    >>> get_next_letter_in_sequence('A')
+    'B'
+    >>> get_next_letter_in_sequence('B')
+    'C'
+    >>> get_next_letter_in_sequence('C')
+    'D'
+    >>> get_next_letter_in_sequence('Z')
+    'AA'
+    >>> get_next_letter_in_sequence('AA')
+    'AB'
+    >>> get_next_letter_in_sequence('AZ')
+    'BA'
+    >>> get_next_letter_in_sequence('ZZ')
+    'AAA'
+    >>> get_next_letter_in_sequence('AAA')
+    'AAB'
+    """
+
+
+
+
+
+
+New Code:
+
+
+def get_next_letter_in_sequence(my_string):
+    """
+    :param my_string:
+    :return:
+    """
+    pass
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def SomeFunction():
+    """
+    This is considered the docstring for the function.
+    It is used by pydoc to generate the documentation for the function.
+
+    This function does nothing and is just here as an exampe.
+    """
+    pass
+
+
+New Code:
+
+
+SomeFunction
+
+
+
+
+
+
+# Some new docstring that has not been added
+#
+# This is line 1
+# This is line 2
+# This is line 3
+#
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_list_without_txt_file():
+    """
+    loads from files
+    :return: list
+    """
+    return os.listdir('.')
+
+
+
+New Code:
+
+
+"""
+This is the name of this file: file.py
+This is the purpose of this file: Add or improve a docstring to this current function.
+"""
+get_list_without_txt_file
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def print_tree(path, level=0):
+    """
+    Prints a tree of the given path.
+    :param path: The path to print the tree of.
+    :param level: The current level in the tree.
+    :return: None
+    """
+    # first print the current file:
+    print('\t' * level + '|- ' + path.split('/')[-1])
+    # now check if it's a directory:
+    if os.path.isdir(path):
+        # if so, print all the files and subdirectories in it:
+        for file in os.listdir(path):
+            print_tree(path + '/' + file, level + 1)
+
+
+New Code:
+
+
+print_tree
+
+
+# This line is added
+def print_tree(self, node=None, prefix="", is_left=True):
+    if node is None:
+        print(self.root)
+        node = self.root
+    if node.left != None:
+        left = node.left.value
+    else:
+        left = "None"
+
+    if node.right != None:
+        right = node.right.value
+    else:
+        right = "None"
+    print(prefix + ("├──" if is_left else "└──" + str(node.value)))
+    print_tree(self, node.left, prefix + ("|   " if is_left else "    "), True)
+    print_tree(self, node.right, prefix + ("|   " if is_left else "    "), False)
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    """Return the sum of the first n digits of a number."""
+    while n:
+        return n % 10 + digit_sum_recur(n // 10)
+    return 0
+
+
+
+
+
+New Code:
+
+
+def digit_sum_recur(n):
+    '''
+    n: a postive integer
+    '''
+    # Your code here
+    if n == 0:
+        return 0
+    return digit_sum_recur(n // 10) + n % 10
+
+if __name__ == '__main__':
+    print(digit_sum_recur(5))
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def censor(text, word):
+    words = text.split()
+    result = ''
+    stars = '*' * len(word)
+    count = 0
+    for i in words:
+        if i == word:
+            words[count] = stars
+        count += 1
+    result = ' '.join(words)
+
+    return result
+
+
+
+New Code:
+
+
+censor
+def censor(text,word):
+  str = ""
+  for i in range(len(word)):
+    if i == 0 or i == len(word)-1:
+      str+=word[i]
+    else:
+      str+="*"
+  text=text.replace(word,str)
+  return text
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def main():
+    """
+    This is the main function.  It also uses a docstring.
+    See how much easier this is to read with the comments gone.
+    """
+    SomeFunction()
+
+
+New Code:
+
+
+main
+
+def get_comments(self, max_results=None):
+"""
+List all the comments for the public section of your talk
+
+Example:
+
+>>> for comment in talk.get_comments():
+...     print comment.content
+
+:rtype: list of :class:`Comment`
+"""
+
+url = self.comments_api_url
+
+comments = []
+
+while True:
+    response = self._get(url)
+
+    comments.extend(Comment(comment) for comment in response.get('comments', []))
+
+    if response.get('next_page') is None or max_results and len(comments) >= max_results:
+        break
+
+    url = response['next_page']
+
+return comments[:max_results]
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def create_txt_file(path, txt_name):
+    '''
+    根据路径和文件名，创建一个文件。
+
+    path: 文件路径
+    txt_name: 文件名
+    '''
+    file_name = os.path.join(path, txt_name)
+    if os.path.isdir(path):
+        if os.path.isfile(file_name):
+            print 'File have already exsited.'
+        else:
+            file_handle = open(path + txt_name, 'w')
+            file_handle.close()
+            print 'Create successfully!'
+    else:
+        print 'The path is invalid, please check!'
+
+
+New Code:
+
+
+create_txt_file
+"""Create a file called "sample.txt"."""
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_files_with_extension(directory, extension):
+    return [file for file in listdir(directory) if file.endswith(extension)]
+
+
+New Code:
+
+
+def get_files_with_extension(my_path, my_extension):
+    """
+    List all files with a given extension, in a given path.
+    :param my_path: 
+    :param my_extension: Like ".txt".
+    :return: A list of files, else an empty list.
+    """
+    my_list = []
+    return my_list
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    '''
+    n: a postive integer
+    '''
+    # Your code here
+    if n == 0:
+        return 0
+    return digit_sum_recur(n // 10) + n % 10
+
+
+New Code:
+
+
+def digit_sum_recur(n):
+    """ (int) -> int
+    Return the sum of the digits of n.
+    Precondition: n >= 0.
+    >>> digit_sum_recur(7)
+    7
+    >>> digit_sum_recur(30)
+    3
+    >>> digit_sum_recur(228)
+    12
+    """
+
+    if n == 0:
+        return 0
+    else:
+        last, rest = n % 10, n // 10
+        return last + digit_sum_recur(rest)
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def anti_vowel(text):
+    t = ""
+    for c in text:
+        for i in "ieaouIEAOU":
+            if c == i:
+                c = ""
+            else:
+                c = c
+        t = t + c
+    return t
+
+
+
+New Code:
+
+
+
+
+def anti_vowel(text):
+  """
+  A function that takes a string of text and returns the text with
+  all of the vowels removed.
+
+  For example:
+      >>> anti_vowel("Hey You!")
+      'Hy Y!'
+
+      >>> anti_vowel("Hello World")
+      'Hll Wrld'
+
+      >>> anti_vowel("")
+      ''
+
+      >>> anti_vowel("[no vowels here]")
+      '[no vowels here]'
+  
+  ""
+
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    """ (int) -> int
+    Return the sum of the digits of n.
+    Precondition: n >= 0.
+    >>> digit_sum_recur(7)
+    7
+    >>> digit_sum_recur(30)
+    3
+    >>> digit_sum_recur(228)
+    12
+    """
+
+    if n == 0:
+        return 0
+    else:
+        last, rest = n % 10, n // 10
+        return last + digit_sum_recur(rest)
+
+
+
+
+
+
+
+New Code:
+
+
+def digit_sum_recur(n):
+    '''
+    This function takes an int and returns the sum of its digits.
+    '''
+    assert type(n) == int
+    if n < 10:
+        return n
+    else:
+        return (n % 10) + digit_sum_recur(n / 10)
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def anti_vowel(text):
+  """
+  A function that takes a string of text and returns the text with
+  all of the vowels removed.
+
+  For example:
+      >>> anti_vowel("Hey You!")
+      'Hy Y!'
+
+      >>> anti_vowel("Hello World")
+      'Hll Wrld'
+
+      >>> anti_vowel("")
+      ''
+
+      >>> anti_vowel("[no vowels here]")
+      '[no vowels here]'
+  
+  ""
+
+
+
+
+New Code:
+
+
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[4]:
+
+
+def remove_vowels(s):
+    # Add or improve a docstring to this function.
+    """
+    This function will remove all vowels from a given string and return it.
+    """
+    vowels = ('a', 'e', 'i', 'o', 'u')
+    for x in s.lower():
+        if x in vowels:
+            s = s.replace(x,"")
+            print(x)
+        else:
+            print(x)
+
+    return s
+
+print(remove_vowels("Hey I am a string"))
+
+
+# In[ ]:
+
+
+
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def replace_function(function_name, file_name, new_code):
+    """
+    Replaces the code of a function in a file.
+    
+    :param function_name: The name of the function to replace.
+    :param file_name: The name of the file to replace the function in.
+    :param new_code: The new code of the function.
+    :return: The new code of the file.
+    """
+    with open(file_name, 'r') as file:
+        code = file.read()
+    function_def = re.search(r'\n\s*def\s+' + function_name + r'\(', code, re.MULTILINE | re.DOTALL)
+    if function_def is None:
+        raise Exception('Could not find function definition for ' + function_name)
+
+    function_begin = code.find(function_def.group())
+    function_end = function_begin + len(function_def.group())
+
+    next_function_def = re.search(r'\n\s*def\s+[a-zA-Z0-9_]+\(', code[function_end:], re.MULTILINE | re.DOTALL)
+    if next_function_def:
+        indentation_level = function_def.group().count('\t') + 1
+
+        while code[function_end:].startswith('\t' * indentation_level) or code[function_end:].startswith('\n'):
+            function_end += 1
+        function_end += next_function_def.start()
+
+    else:
+        function_end = len(code)
+
+    new_code = indent_code(new_code, function_def.group().count('\t'))
+
+    code = code[:function_begin] + new_code + code[function_end:] + '\n\n'
+
+    with open(file_name, 'w') as file:
+        file.write(code)
+    return code
+
+
+New Code:
+
+
+def replace_function():
+    """A function with a docstring.
+
+    A function to replace the one in the file with additional docstring.
+    """
+    pass
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def replace_function():
+    """A function with a docstring.
+
+    A function to replace the one in the file with additional docstring.
+    """
+    pass
+
+
+
+
+New Code:
+
+
+def replace_function(A):
+    """
+    Returns value A.
+    
+    >>> replace_function('A')
+    'A'
+
+    """
+    return A
+
+if __name__ == '__main__':
+    import doctest
+    import os
+    os.environ['TERM'] = 'linux' # Suppress ^[[?1034h
+    doctest.testmod()
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    '''
+    This function takes an int and returns the sum of its digits.
+    '''
+    assert type(n) == int
+    if n < 10:
+        return n
+    else:
+        return (n % 10) + digit_sum_recur(n / 10)
+
+
+
+
+
+
+
+
+New Code:
+
+
+def digit_sum_recur(n):
+    """This function is supposed to return the sum of all the digits of a
+    number."""
+    # Base case
+    if n == 0:
+        return n
+
+    # Modulo by 10 gives us the last digit
+    last_digit = n % 10
+    # Call the function recursively
+    return last_digit + digit_sum_recur(n // 10)
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def remove_vowels(s):
+    # Add or improve a docstring to this function.
+    """
+    This function will remove all vowels from a given string and return it.
+    """
+    vowels = ('a', 'e', 'i', 'o', 'u')
+    for x in s.lower():
+        if x in vowels:
+            s = s.replace(x,"")
+            print(x)
+        else:
+            print(x)
+
+    return s
+
+
+New Code:
+
+
+remove_vowels
+""" This function removes the vowels from a list of strings
+
+Args:
+    vowels: A list of strings
+
+Returns:
+    A list of strings that have had the vowels removed.
+"""
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def main():
+    """
+    This is the main function.  It also uses a docstring.
+    See how much easier this is to read with the comments gone.
+    """
+    SomeFunction()
+
+
+New Code:
+
+
+"main"
+
+def main():
+	"""Function definition is here"""
+	pass
+
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def select_function(file_name, command):
+    """
+    Prints a list of all the functions in the file and asks the user which function they want to see the code for.
+    :param file_name: The name of the file.
+    :param function_name: The name of the function.
+    :return: The code for the function.
+    """
+    all_functions = list_functions(file_name)
+    function_name, confidence = select_classification_label(command, all_functions)
+    return file_name, function_name
+
+
+New Code:
+
+
+def select_function(ab):
+    """
+    Prints either the area or the perimeter of a square
+
+    :param ab: side length of the square
+    :return: none
+    """
+    while True:
+        choice = input("Enter 1 to calculate the area or " +
+                       "Enter 2 to calculate the perimeter: ")
+        if choice == "1":
+            print("Area: " + str(ab ** 2))
+            break
+        elif choice == "2":
+            print("Perimeter: " + str((ab * 4)))
+            break
+        else:
+            print("Sorry, I didn't understand your choice.")
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_files_with_extension(my_path, my_extension):
+    """
+    List all files with a given extension, in a given path.
+    :param my_path: 
+    :param my_extension: Like ".txt".
+    :return: A list of files, else an empty list.
+    """
+    my_list = []
+    return my_list
+
+
+
+
+New Code:
+
+
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""Get all file paths with the given extension.
+
+This function returns a list of all the file paths with the given
+extension. This is done recursively.
+
+Args:
+    path (str): The path to search in.
+    extension (str): The file extension to look for.
+
+Returns:
+    list: List of file paths with the given extension found in the given path.
+
+"""
+
+def get_files_with_extension(path, extension)
+
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    """This function is supposed to return the sum of all the digits of a
+    number."""
+    # Base case
+    if n == 0:
+        return n
+
+    # Modulo by 10 gives us the last digit
+    last_digit = n % 10
+    # Call the function recursively
+    return last_digit + digit_sum_recur(n // 10)
+
+
+
+
+
+
+
+
+
+New Code:
+
+
+'''
+Write a recursive method that returns the sum of the digits in a given integer. Use the following method header:
+'''
+
+
+def digit_sum_recur(n):
+    if n == 0:
+        return 0
+    else:
+        return digit_sum_recur(n // 10) + n % 10
+
+
+def main():
+    n = int(input("Enter number: "))
+    print("Sum of digits", n, "is", digit_sum_recur(n))
+
+
+if __name__ == "__main__":
+    main()
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    if n == 0:
+        return 0
+    else:
+        return digit_sum_recur(n // 10) + n % 10
+
+
+
+New Code:
+
+
+def digit_sum_recur(digit):
+    if digit == 0:
+        return 0
+    else:
+        return (digit % 10) + digit_sum_recur(digit // 10)
+
+
+print(digit_sum_recur(1234))
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def is_palindrome(word):
+    word = word.lower()
+    return word[::-1] == word
+
+
+New Code:
+
+
+# Do not use any imports.
+
+# Given a string, return whether or not it is a palindrome.
+# A palindrome is a string that is the same forwards and backwards.
+is_palindrome
+
+def is_palindrome(input):
+    """
+    Return True if input is palindrome, False otherwise.
+
+    Args:
+       input(str): input to be checked if it is palindrome
+    """
+    if len(input) <= 1:
+        return True
+    else:
+        first_char = input[0]
+        last_char = input[-1]
+
+        # sub_input is input with first and last char removed
+        sub_input = input[1:-1]
+
+        return (first_char == last_char) and is_palindrome(sub_input)
+
+
+print("Pass" if (is_palindrome("")) else "Fail")
+print("Pass" if (is_palindrome("a")) else "Fail")
+print("Pass" if (is_palindrome("madam")) else "Fail")
+print("Pass" if (is_palindrome("abba")) else "Fail")
+print("Pass" if not (is_palindrome("Udacity")) else "Fail")
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def select_function(ab):
+    """
+    Prints either the area or the perimeter of a square
+
+    :param ab: side length of the square
+    :return: none
+    """
+    while True:
+        choice = input("Enter 1 to calculate the area or " +
+                       "Enter 2 to calculate the perimeter: ")
+        if choice == "1":
+            print("Area: " + str(ab ** 2))
+            break
+        elif choice == "2":
+            print("Perimeter: " + str((ab * 4)))
+            break
+        else:
+            print("Sorry, I didn't understand your choice.")
+
+
+
+
+New Code:
+
+
+def select_function(variable_to_choose_func, value_1, value_2):
+    """
+    :param variable_to_choose_func: string
+    :param value_1: int
+    :param value_2: int
+    :return: calc_function
+    """
+    if variable_to_choose_func == 'add':
+        return calc_function(add, value_1, value_2)
+    elif variable_to_choose_func == 'subtract':
+        return calc_function(subtract, value_1, value_2)
+    elif variable_to_choose_func == 'multiply':
+        return calc_function(multiply, value_1, value_2)
+    elif variable_to_choose_func == 'divide':
+        return calc_function(divide, value_1, value_2)
+
+
+def calc_function(function, value_1, value_2):
+    """
+    :param function: function
+    :param value_1: int
+    :param value_2: int
+    :return: result of function applied to two values
+    """
+    return function(value_1, value_2)
+
+
+def add(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: addition result of two values
+    """
+    return value_1 + value_2
+
+
+def subtract(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: subtraction result of two values
+    """
+    return value_1 - value_2
+
+
+def multiply(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: multiplication result of two values
+    """
+    return value_1 * value_2
+
+
+def divide(value_1, value_2):
+    """
+    :param value_1: int
+    :param value_2: int
+    :return: division result of two values
+    """
+    return value_1 / value_2
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_files_list():
+    files = os.listdir()
+    for file in files:
+        if re.search(r'^\.\w+', file):
+            files.remove(file)
+    return files
+
+
+New Code:
+
+
+import os
+
+
+def get_files_list(path):
+    """
+    This function will create a list of all the files inside a given directory.
+    :param path: directory path
+    :return: list of files
+    """
+    file_list = []
+    for file_name in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file_name)):
+            file_list.append(file_name)
+
+    return file_list
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_files_with_extension(path, extension)
+
+
+
+
+
+New Code:
+
+
+__author__ = 'bryan'
+
+from os import listdir, path
+
+
+def get_files_with_extension(dir_path, ext):
+    """
+    Get a list of files with a certain extension in a given directory.
+
+    :param dir_path: the directory path to search in
+    :param ext: the extension of the files you are searching for
+    :return: a list of files in the dir_path containing the extension ext
+    """
+    return filter(lambda x: x.endswith(ext), listdir(dir_path))
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(digit):
+    if digit == 0:
+        return 0
+    else:
+        return (digit % 10) + digit_sum_recur(digit // 10)
+
+
+
+New Code:
+
+
+def digit_sum_recur(n):
+    if n == 0:
+        return 0
+    return (n % 10) + digit_sum_recur(n // 10)
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def is_palindrome(input):
+    """
+    Return True if input is palindrome, False otherwise.
+
+    Args:
+       input(str): input to be checked if it is palindrome
+    """
+    if len(input) <= 1:
+        return True
+    else:
+        first_char = input[0]
+        last_char = input[-1]
+
+        # sub_input is input with first and last char removed
+        sub_input = input[1:-1]
+
+        return (first_char == last_char) and is_palindrome(sub_input)
+
+
+
+New Code:
+
+
+def is_palindrome(word):
+    return word == word[::-1]
+
+
+def main():
+    print(is_palindrome('racecar'))
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    if n == 0:
+        return 0
+    return (n % 10) + digit_sum_recur(n // 10)
+
+
+
+
+
+New Code:
+
+
+def digit_sum_recur(n):
+    """ Returns the sum of the digits of a number.
+
+    >>> digit_sum_recur(12345)
+    15
+    """
+    if n < 10:
+        return n
+
+    return (n % 10) + digit_sum_recur(n / 10)
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def reverse(text):
+    return text[::-1]
+
+
+New Code:
+
+
+def reverse(text):
+    """Reverse a string iteratively."""
+    text_list = list(text)
+    idx = len(text_list) - 1
+    reversed_list = []
+    while idx >= 0:
+        reversed_list.append(text_list[idx])
+        idx -= 1
+    reversed_text = ''.join(reversed_list)
+    return reversed_text
+
+
+def reverse2(text):
+    """Reverse a string recursively."""
+    text_list = list(text)
+    if len(text_list) == 1:
+        return text_list[0]
+    else:
+        return text_list[-1] + reverse2(text_list[:-1])
+
+
+print reverse("hello")
+print reverse2("hello")
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def select_function(variable_to_choose_func, value_1, value_2):
+    """
+    :param variable_to_choose_func: string
+    :param value_1: int
+    :param value_2: int
+    :return: calc_function
+    """
+    if variable_to_choose_func == 'add':
+        return calc_function(add, value_1, value_2)
+    elif variable_to_choose_func == 'subtract':
+        return calc_function(subtract, value_1, value_2)
+    elif variable_to_choose_func == 'multiply':
+        return calc_function(multiply, value_1, value_2)
+    elif variable_to_choose_func == 'divide':
+        return calc_function(divide, value_1, value_2)
+
+
+
+New Code:
+
+
+"""
+function to ask user for a float and return the float
+"""
+
+def return_float():
+    """
+    Ask user for a float and return the float
+    """
+    while True:
+        try:
+            return float(input("Please enter a number: "))
+        except ValueError:
+            print("That was not a number")
+
+if __name__ == "__main__":
+    print("\n", return_float())
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_files_list(path):
+    """
+    This function will create a list of all the files inside a given directory.
+    :param path: directory path
+    :return: list of files
+    """
+    file_list = []
+    for file_name in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file_name)):
+            file_list.append(file_name)
+
+    return file_list
+
+
+
+
+New Code:
+
+
+def get_files_list(path):
+    """This function get a list of files. This function
+    can only access files in its directory and not the
+    sub directories.
+
+    Args:
+        path(str): string containing the path
+
+    Returns:
+        files(list): a list of files
+    """
+    import os
+    files = [file for file in os.listdir(path) if os.path.isfile(path + "/" + file)]
+    return files
+
+if __name__ == "__main__":
+    print get_files_list("path/to/directory")
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def get_files_with_extension(dir_path, ext):
+    """
+    Get a list of files with a certain extension in a given directory.
+
+    :param dir_path: the directory path to search in
+    :param ext: the extension of the files you are searching for
+    :return: a list of files in the dir_path containing the extension ext
+    """
+    return filter(lambda x: x.endswith(ext), listdir(dir_path))
+
+
+
+
+New Code:
+
+
+import os
+
+
+def get_files_with_extension(directory, extension):
+    """ Returns list of files in directory with extension."""
+    files_list = []
+    for dirpath, _, filenames in os.walk(directory):
+        for file in filenames:
+            if file.endswith(extension):
+                files_list.append(os.path.join(dirpath, file))
+    return files_list
+
+
+
+Changes
+Refactor this code to be pythonic
+
+Old Code:
+def digit_sum_recur(n):
+    """ Returns the sum of the digits of a number.
+
+    >>> digit_sum_recur(12345)
+    15
+    """
+    if n < 10:
+        return n
+
+    return (n % 10) + digit_sum_recur(n / 10)
+
+
+
+
+
+
+New Code:
+
+
+def digit_sum_recur(number):
+    if number == 0:
+        return 0
+    else:
+        return number % 10 + digit_sum_recur(number/10)
+
+print digit_sum_recur(123)
+
+
+

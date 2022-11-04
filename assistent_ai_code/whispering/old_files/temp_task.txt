@@ -200,7 +200,7 @@ def edit_code(code):
     This function takes in a string of code and returns a string of code that 
     has been edited based on the user's input.
     """
-    openai.api_key = "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"
+    openai.api_key = "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"
     desired_changes = input("What changes do you want to make to the code? ")
     response = openai.Edit.create(
     model="code-davinci-edit-001",
@@ -220,7 +220,7 @@ def append_code():
     file_name = input("What file do you want to append the code to? ").strip()
     line_number = int(input("What line number do you want to append the code to? ").strip())
     instructions = input("What do you want to append? ").strip()
-    openai.api_key = "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"
+    openai.api_key = "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"
     response = openai.Edit.create(
     model="code-davinci-edit-001",
     input="",
