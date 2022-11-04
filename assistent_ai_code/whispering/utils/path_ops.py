@@ -63,14 +63,6 @@ from os import listdir, path
 
 import os
 
-
-def get_files_with_extension(directory, extension):
-    """ Returns list of files in directory with extension."""
-    files_list = []
-    for dirpath, _, filenames in os.walk(directory):
-        for file in filenames:
-            if file.endswith(extension):
-                files_list.append(os.path.join(dirpath, file))
-    return files_list
+[Dockerfile]
 
 

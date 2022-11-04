@@ -55,22 +55,7 @@ def print_variables():
 
 
 # this is a function that asks the user to enter a variable name and a new value for the variable
-def change_variable():
-    # ask the user to select a variable name from the list of variables in the terminal
-    import os
-    os.system('clear')
-    print('Select a variable name from the list below:')
-    # read the contents of the csv file
-    print_variables()
-    # allow the user to select a variable name using the keyboard
-    variable_name = input('Enter a variable name: ')
-    # ask the user to enter a new value for the variable
-    new_value = input('Enter a new value for the variable: ')
-    # edit the variable
-    edit_variable(variable_name, new_value)
-    # now print all the variables and their values
-    print('The variables and their values are now:')
-    # read the contents of the csv file
-    print_variables()
 
-change_variable()
+change_variable = 0
+
+

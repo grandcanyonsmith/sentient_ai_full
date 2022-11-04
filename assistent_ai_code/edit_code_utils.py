@@ -16,7 +16,7 @@ import re
 
 import macro
 
-
+openai.api_key = "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"
 
 def get_function_code(function_name, file_name):
     """
@@ -178,12 +178,8 @@ def get_code_from_screen_shot():
     img = cv2.imread('/Users/canyonsmith/Desktop/sentient_ai/assistent_ai_code/whispering/whispering.png')
     return pytesseract.image_to_string(img)
 
-def get_function_name(code):
-    """
-    Extract function name from a line beginning with "def "
-    """
-    assert code.startswith("def ")
-    return code[len("def "): code.index("(")]
+get_function_names
+
 
 def get_until_no_space(all_lines, i) -> str:
     """
@@ -251,3 +247,4 @@ def get_functions(code):
     with open(file_name, 'w') as file:
         file.write(code)
     return code
+

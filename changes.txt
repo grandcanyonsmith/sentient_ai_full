@@ -3846,3 +3846,101 @@ print digit_sum_recur(123)
 
 
 
+Changes
+This line of code makes an outdated API call to start and communicate with processes. We recommend that you use the `subprocess` module to start new processes, connect with their pipes, and get their return codes.
+
+[Learn more](https://docs.python.org/3/library/subprocess.html)
+
+Old Code:
+def change_variable():
+    # ask the user to select a variable name from the list of variables in the terminal
+    import os
+    os.system('clear')
+    print('Select a variable name from the list below:')
+    # read the contents of the csv file
+    print_variables()
+    # allow the user to select a variable name using the keyboard
+    variable_name = input('Enter a variable name: ')
+    # ask the user to enter a new value for the variable
+    new_value = input('Enter a new value for the variable: ')
+    # edit the variable
+    edit_variable(variable_name, new_value)
+    # now print all the variables and their values
+    print('The variables and their values are now:')
+    # read the contents of the csv file
+    print_variables()
+
+
+New Code:
+
+
+change_variable = 0
+
+
+
+Changes
+Using `Exception` and `BaseException` can make your code prone to errors and difficult to maintain. Instead, we recommend using one of the [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) or creating a custom exception class that is derived from `Exception` or one of its subclasses.
+
+
+
+Old Code:
+def digit_sum_recur(number):
+    if number == 0:
+        return 0
+    else:
+        return number % 10 + digit_sum_recur(number/10)
+
+
+New Code:
+
+
+digit_sum_recurs
+
+
+
+Changes
+To create a `list`, try to use `list` comprehension instead of a loop. List comprehension is the preferred way to make a list using Python, and it's simpler and easier to understand than using a loop.
+
+[Learn more](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions)
+
+Old Code:
+def get_files_with_extension(directory, extension):
+    """ Returns list of files in directory with extension."""
+    files_list = []
+    for dirpath, _, filenames in os.walk(directory):
+        for file in filenames:
+            if file.endswith(extension):
+                files_list.append(os.path.join(dirpath, file))
+    return files_list
+
+
+
+
+New Code:
+
+
+[Dockerfile]
+
+
+
+Changes
+Using `Exception` and `BaseException` can make your code prone to errors and difficult to maintain. Instead, we recommend using one of the [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html) or creating a custom exception class that is derived from `Exception` or one of its subclasses.
+
+
+
+Old Code:
+def get_function_name(code):
+    """
+    Extract function name from a line beginning with "def "
+    """
+    assert code.startswith("def ")
+    return code[len("def "): code.index("(")]
+
+
+New Code:
+
+
+get_function_names
+
+
+

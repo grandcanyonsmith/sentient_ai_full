@@ -43,13 +43,8 @@ digit_sum
 Write a recursive method that returns the sum of the digits in a given integer. Use the following method header:
 '''
 
-def digit_sum_recur(number):
-    if number == 0:
-        return 0
-    else:
-        return number % 10 + digit_sum_recur(number/10)
+digit_sum_recurs
 
-print digit_sum_recur(123)
 
 
 
@@ -232,6 +227,8 @@ if __name__ == '__main__':
     file_name= input('Enter a file name: ')
     replace_function(function_name, file_name, edit_code(get_function_code(function_name, file_name)))
     # append_code()
+
+
 
 
 
